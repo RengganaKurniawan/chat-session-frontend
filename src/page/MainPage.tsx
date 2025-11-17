@@ -1,7 +1,9 @@
+import LeftNav from "../component/LeftNav";
+
 function MainPage() {
     return(
         <div>
-            <h1>Main</h1>
+            <LeftNav />
         </div>
     )
 }
