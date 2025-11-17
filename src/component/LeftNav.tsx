@@ -63,10 +63,10 @@ const StyledDrawer = styled(Drawer, { shouldForwardProp: (prop) => prop !== 'ope
 
 
 const middleIcon = [
-    { text: 'Home', icon: <HomeIcon /> },
-    { text: 'Sessions', icon: <ChatIcon /> },
-    { text: 'Status', icon: <NotificationsIcon /> },
-    { text: 'Favorite', icon: <FavoriteIcon /> },
+    { text: 'Home', icon: <HomeIcon />, link: "/", isActive: true },
+    { text: 'Sessions', icon: <ChatIcon />, link: "/sessions", isActive: true },
+    { text: 'Status', icon: <NotificationsIcon />, link: "/status", isActive: false },
+    { text: 'Favorite', icon: <FavoriteIcon />, link: "/favorite", isActive: false},
 ];
 
 const bottomIcons = [
@@ -79,10 +79,6 @@ function LeftNav() {
 
     const handleToggleDrawer = () => {
         setOpen(!open);
-    }
-    const handleLogout = () => {
-        // HANDLE TOKEN
-        navigate("/login")
     }
 
     return (
@@ -137,6 +133,10 @@ function LeftNav() {
                                     justifyContent: open ? 'initial' : 'center',
                                     px: 2.25, 
                                 }}
+                                onClick={() => {
+                                    if(item.isActive)
+                                        navigate(item.link)
+                                    }}
                             >
                                 <ListItemIcon
                                     sx={{
@@ -194,7 +194,8 @@ function LeftNav() {
                                         transition: 'opacity 0.2s',
                                         mr: open ? 1.5 : 0,
                                     }}
-                                    onClick={handleLogout}
+                                    // HANDLE TOKEN
+                                    onClick={() => navigate("/login")}
                                 >
                                     <LogoutIcon />
                                 </IconButton>
