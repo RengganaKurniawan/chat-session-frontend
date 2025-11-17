@@ -191,11 +191,12 @@ export default function MainPage() {
             <span className="text-sm font-medium">Start Chat Session</span>
           </Button>
 
-          {fileName && (
-            <p className="text-xs text-gray-500 mt-3">
-              Selected file: <span className="font-medium">{fileName}</span>
-            </p>
-          )}
+          <p
+            className={`text-xs text-gray-500 mt-3 ${fileName ? "" : "invisible"}`}
+            aria-hidden={!fileName}
+          >
+            Selected file: <span className="font-medium">{fileName ?? "placeholder"}</span>
+          </p>
         </div>
       </div>
     </div>
