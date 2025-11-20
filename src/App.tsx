@@ -4,6 +4,8 @@ import MainPage from "./page/MainPage";
 import SessionsPage from "./page/SessionsPage";
 import RoomsList from "./page/RoomList";
 import RoomChat from "./page/RoomChat";
+import SessionsPageChat from "./page/SessionsPageChat";
+
 
 function App(){
   return (
@@ -15,6 +17,7 @@ function App(){
       {/* test */}
       <Route path="/roomList" element={<RoomsList />} />
       <Route path="/rooms/:roomId" element={<RoomChat />} />
+      <Route path="/sessionsChat" element={<SessionsPageChat />} />
     </Routes>
   )
 }
