@@ -1,0 +1,19 @@
+{
+  "rooms": [
+    {
+      "roomId": 1,
+      "name": "General",
+      "members": [1, 2],
+      "messages": [
+        { "id": 1, "senderId": 1, "text": "Hello" },
+        { "id": 2, "senderId": 2, "text": "Hi!" }
+      ]
+    },
+    {
+      "roomId": 2,
+      "name": "Random",
+      "members": [1],
+      "messages": []
+    }
+  ]
+}
