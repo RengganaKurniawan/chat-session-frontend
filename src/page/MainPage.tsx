@@ -3,11 +3,13 @@ import Button from "@mui/material/Button";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import CloudDoneIcon from "@mui/icons-material/CloudDone";
 import LeftNav from '../component/LeftNav'; 
+import { useNavigate } from 'react-router-dom'; 
 
 export default function MainPage() {
   const [fileName, setFileName] = useState<string | null>(null);
   const [isDragActive, setIsDragActive] = useState(false);
   const inputRef = useRef<HTMLInputElement | null>(null);
+  const navigate = useNavigate(); 
 
   const dragCounter = useRef(0);
 
@@ -173,7 +175,13 @@ export default function MainPage() {
             <Button
               fullWidth
               disabled={!fileName}
-              onClick={() => alert(fileName ? `Starting chat with ${fileName}` : "Please upload a file")}
+              onClick={() => {
+                if (fileName) {
+                  navigate('/sessions'); 
+                } else {
+                  alert("Please upload a file");
+                }
+              }}
               className="w-full py-3 rounded-full"
               sx={{
                 border: "1px solid",
