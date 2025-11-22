@@ -1,5 +1,3 @@
-import LeftNav from "../component/LeftNav";
-
 import { useState } from "react";
 import {
   Box,
@@ -44,7 +42,20 @@ const DefaultSortIcon = () => (
   </svg>
 );
 
-function SessionsPage() {
+interface Session {
+  id: number;
+  title: string;
+  date: string;
+  status: string;
+}
+
+interface SessionsPageProps {
+  onSessionSelect: (session: Session) => void;
+  isCompact: boolean;
+  selectedSession: Session | null;
+}
+
+function SessionsPage({ onSessionSelect, isCompact, selectedSession }: SessionsPageProps) {
   const [searchQuery, setSearchQuery] = useState("");
   const [, setSortBy] = useState("default");
 
@@ -59,7 +70,7 @@ function SessionsPage() {
   const [statusAnchor, setStatusAnchor] = useState<HTMLElement | null>(null);
 
   // Sessions
-  const [sessions, setSessions] = useState([
+  const [sessions, setSessions] = useState<Session[]>([
     { id: 1, title: "Chat Room 1", date: "Date 1", status: "Active" },
     { id: 2, title: "Chat Room 2", date: "Date 1", status: "Active" },
     { id: 3, title: "Chat Room 3", date: "Date 1", status: "Active" },
@@ -71,7 +82,7 @@ function SessionsPage() {
     { id: 9, title: "Chat Room 9", date: "Date 3", status: "Active" },
     { id: 10, title: "Chat Room 10", date: "Date 4", status: "Inactive" },
     { id: 11, title: "Chat Room 11", date: "Date 4", status: "Active" },
-    { id: 12, title: "Chat Room 12", date: "Date 4", status: "Active" }
+    { id: 12, title: "Chat Room 12", date: "Date 4", "status": "Active" }
   ]);
 
   // ADD SESSION 
@@ -81,7 +92,7 @@ function SessionsPage() {
   const handleAddSession = () => {
     if (!newTitle.trim()) return;
 
-    const newSession = {
+    const newSession: Session = {
       id: sessions.length + 1,
       title: newTitle,
       date: "Today",
@@ -127,8 +138,6 @@ function SessionsPage() {
   });
 
   return (
-    <Box sx={{ display: "flex" }}>
-      <LeftNav />
       <Box sx={{ minHeight: "100vh", bgcolor: "white", p: 4, flexGrow: 1 }}>
 
         <Box
@@ -224,44 +233,56 @@ function SessionsPage() {
                   </IconButton>
                 </Box>
               </TableCell>
+              {!isCompact && (
+              <>
+                <TableCell>
+                  <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                    <Typography fontWeight={600}>Date</Typography>
 
-              <TableCell>
-                <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                  <Typography fontWeight={600}>Date</Typography>
+                    <IconButton
+                      size="small"
+                      onClick={(e) => setDateAnchor(e.currentTarget)}
+                      sx={{ color: dateFilter.length > 0 ? "primary.main" : "inherit" }}
+                    >
+                      <FilterAltOutlinedIcon fontSize="small" />
+                    </IconButton>
+                  </Box>
+                </TableCell>
 
-                  <IconButton
-                    size="small"
-                    onClick={(e) => setDateAnchor(e.currentTarget)}
-                    sx={{ color: dateFilter.length > 0 ? "primary.main" : "inherit" }}
-                  >
-                    <FilterAltOutlinedIcon fontSize="small" />
-                  </IconButton>
-                </Box>
-              </TableCell>
+                <TableCell>
+                  <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                    <Typography fontWeight={600}>Status</Typography>
 
-              <TableCell>
-                <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                  <Typography fontWeight={600}>Status</Typography>
-
-                  <IconButton
-                    size="small"
-                    onClick={(e) => setStatusAnchor(e.currentTarget)}
-                    sx={{ color: statusFilter.length > 0 ? "primary.main" : "inherit" }}
-                  >
-                    <FilterAltOutlinedIcon fontSize="small" />
-                  </IconButton>
-                </Box>
-              </TableCell>
-
+                    <IconButton
+                      size="small"
+                      onClick={(e) => setStatusAnchor(e.currentTarget)}
+                      sx={{ color: statusFilter.length > 0 ? "primary.main" : "inherit" }}
+                    >
+                      <FilterAltOutlinedIcon fontSize="small" />
+                    </IconButton>
+                  </Box>
+                </TableCell>
+              </>
+              )}
             </TableRow>
           </TableHead>
 
           <TableBody>
             {filteredSessions.map((session) => (
-              <TableRow key={session.id} hover>
+              <TableRow
+                key={session.id}
+                hover
+                onClick={() => onSessionSelect(session)}
+                selected={selectedSession ? selectedSession.id === session.id : false}
+                sx={{ cursor: 'pointer' }}
+              >
                 <TableCell>{session.title}</TableCell>
-                <TableCell>{session.date}</TableCell>
-                <TableCell>{session.status}</TableCell>
+                {!isCompact && (
+                  <>
+                    <TableCell>{session.date}</TableCell>
+                    <TableCell>{session.status}</TableCell>
+                  </>
+                )}
               </TableRow>
             ))}
           </TableBody>
@@ -335,7 +356,6 @@ function SessionsPage() {
           </Button>
         </DialogActions>
       </Dialog>
-    </Box>
     </Box>
    
   );

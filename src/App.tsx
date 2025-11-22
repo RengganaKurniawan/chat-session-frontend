@@ -1,8 +1,7 @@
 import { Routes, Route } from "react-router-dom"; 
 import LoginPage from "./page/LoginPage";
 import MainPage from "./page/MainPage";
-import SessionsPage from "./page/SessionsPage";
-import SessionsPageChat from "./page/SessionsPageChat";
+import SessionsSplitView from "./page/SessionsSplitView";
 
 
 function App(){
@@ -10,8 +9,7 @@ function App(){
     <Routes>
       <Route path="/login" element={<LoginPage />} />
       <Route path="/" element={<MainPage />} />
-      <Route path="/sessions" element={<SessionsPage />} />
-      <Route path="/sessionsChat" element={<SessionsPageChat />} />
+      <Route path="/sessions" element={<SessionsSplitView />} />
     </Routes>
   )
 }

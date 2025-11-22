@@ -1,9 +1,21 @@
-import LeftNav from "../component/LeftNav";
-
 import { useState } from "react";
 import React from "react";
+import { IconButton } from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
 
-function ChatRoomUI() {
+interface Session {
+  id: number;
+  title: string;
+  date: string;
+  status: string;
+}
+
+interface ChatRoomUIProps {
+  session: Session;
+  onClose: () => void;
+}
+
+export function ChatRoomUI({ session, onClose }: ChatRoomUIProps) {
   const [messages, setMessages] = useState([
     {
       id: 1,
@@ -116,13 +128,15 @@ function ChatRoomUI() {
 
   return (
     <div style={styles.wrapper}>
-      <LeftNav />
       <div style={styles.container}>
         <div style={styles.chatBox}>
        
     
           <div style={styles.header}>
-            <span style={styles.headerText}>Chat room 1</span>
+            <span style={styles.headerText}>{session.title}</span>
+            <IconButton onClick={onClose} size="small">
+              <CloseIcon />
+            </IconButton>
           </div>
 
           {/* message */}
@@ -235,7 +249,7 @@ const styles = {
   wrapper: {
     display: "flex",
     height: "100vh",
-    width: "100vw"
+    width: "100%"
   } as React.CSSProperties,
 
   container: {
@@ -259,7 +273,10 @@ const styles = {
   header: {
     padding: "16px",
     backgroundColor: "#f0f0f0",
-    borderBottom: "1px solid #ddd"
+    borderBottom: "1px solid #ddd",
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center"
   } as React.CSSProperties,
 
   headerText: {
@@ -402,5 +419,3 @@ const styles = {
     color: "#666"
   } as React.CSSProperties
 };
-
-export default ChatRoomUI;
