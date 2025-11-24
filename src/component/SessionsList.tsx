@@ -49,13 +49,13 @@ interface Session {
   status: string;
 }
 
-interface SessionsPageProps {
+interface SessionsListProps {
   onSessionSelect: (session: Session) => void;
   isCompact: boolean;
   selectedSession: Session | null;
 }
 
-function SessionsPage({ onSessionSelect, isCompact, selectedSession }: SessionsPageProps) {
+function SessionsList({ onSessionSelect, isCompact, selectedSession }: SessionsListProps) {
   const [searchQuery, setSearchQuery] = useState("");
   const [, setSortBy] = useState("default");
 
@@ -361,4 +361,4 @@ function SessionsPage({ onSessionSelect, isCompact, selectedSession }: SessionsP
   );
 }
 
-export default SessionsPage;
+export default SessionsList;

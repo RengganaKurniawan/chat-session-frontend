@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Box, CssBaseline } from '@mui/material';
 import LeftNav from '../component/LeftNav';
-import SessionsPage from './SessionsPage';
-import { ChatRoomUI } from './SessionsPageChat';
+import SessionsList from '../component/SessionsList';
+import { ChatRoomUI } from '../component/ChatRoomUI';
 
 interface Session {
   id: number;
@@ -44,7 +44,7 @@ const SessionsSplitView = () => {
           transition: 'flex 0.3s ease-in-out',
           overflow: 'hidden',
         }}>
-          <SessionsPage
+          <SessionsList
             onSessionSelect={handleSessionSelect}
             isCompact={isCompact}
             selectedSession={selectedSession}
