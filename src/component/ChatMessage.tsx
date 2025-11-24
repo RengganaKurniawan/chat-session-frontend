@@ -1,30 +1,77 @@
 import { Box, Paper, Typography } from "@mui/material";
 
 interface ChatMessageProps {
-    role: "user" | "assistant";
-    content: string;
+    text: string;
+    senderId: number;
+    senderName: string;
+    time: string;
+    isOwn: boolean
 }
 
-function ChatMessage({ role, content }: ChatMessageProps) {
-    const isUser = role === "user";
+function ChatMessage({ 
+    text,
+    senderName,
+    time,
+    isOwn,
+}: ChatMessageProps) {
     
     return (
         <Box
             display="flex"
-            justifyContent={isUser ? "flex-end" : "flex-start"}
+            justifyContent={isOwn ? "flex-end" : "flex-start"}
             mb={1.5}
         >
             <Paper
-                elevation={1}
+                elevation={2}
                 sx={{
-                    p: 1.5,
+                    px: 1.5,
+                    py: 0.5,
                     maxWidth: "70%",
-                    bgcolor: isUser ? "primary.main" : "grey.200",
-                    color: isUser ? "white" : "black",
+                    minWidth: "150px",
+                    bgcolor: isOwn ? "#DCF8C6" : "#ffffff",
                     borderRadius: 2,
                 }}
             >
-                <Typography variant="body1">{content}</Typography>
+                {/* sender name */}
+                <Typography 
+                    variant="caption"
+                    sx={{
+                        display: "block",
+                        textAlign: "left",
+                        color: "text.secondary",
+                        fontWeight: 600,
+                        mb: 0.2,
+                    }}
+                >
+                    {senderName}
+                </Typography>
+
+                {/* message text */}
+                <Typography 
+                    variant="body2" 
+                    sx={{ 
+                        whiteSpace: "pre-wrap",
+                        lineHeight: 1.2,
+
+                        wordBreak: "break-word",
+                        overflowWrap: "anywhere",
+                    }}>
+                    {text}
+                </Typography>
+
+                {/* time */}
+                <Typography
+                    variant="caption"
+                    sx={{
+                        display: "block",
+                        textAlign: "right",
+                        mt: 0.2,
+                        color: "text.disabled",
+                        fontSize: "0.7rem",
+                    }}
+                    >
+                    {time}
+                </Typography>
             </Paper>
 
         </Box>

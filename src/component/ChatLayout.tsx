@@ -3,23 +3,52 @@ import { useState } from "react";
 import SendIcon from "@mui/icons-material/Send";
 import ChatMessage from "./ChatMessage";
 
-interface Message {
-    role: "assistant" | "user";
-    content: string;
-}
+import chatData from "../data/chatData.json";
+import usersData from "../data/users.json";
+
+// implement sama login
+const LOGGED_IN_USER_ID = 1;
 
 function ChatLayout() {
-    const [messages, setMessages] = useState<Message[]>([
-    { role: "assistant", content: "Hello! How can I help you today?" },
-  ]);
+    // contoh chat room 1
+    const session = chatData.sessions.find(s => s.sessionsId === 1);
+
+    const initialMessages = 
+        session?.messages.map(m => {
+            const sender = usersData.users.find(u => u.id === m.senderId);
+
+            return {
+                id: m.id,
+                text: m.text,
+                time: m.time,
+                senderId: m.senderId,
+                senderName: sender?.name || "Unknown",
+                isOwn: m.senderId === LOGGED_IN_USER_ID,
+            }
+        }) || [];
+
+    const [messages, setMessages] = useState(initialMessages);
     const [ input, setInput ] = useState("")
 
     const handleSend = () => {
-        if(!input.trim()) return;
+        if (!input.trim()) return;
 
-        setMessages([...messages, { role: "user", content: input.trim() }]);
+        const now = new Date();
+        const time =
+            now.getHours() + ":" + now.getMinutes().toString().padStart(2, "0");
+
+        const newMessage = {
+            id: messages.length + 1,
+            text: input.trim(),
+            time,
+            senderId: LOGGED_IN_USER_ID,
+            senderName: usersData.users.find(u => u.id === LOGGED_IN_USER_ID)?.name || "Me",
+            isOwn: true,
+        };
+
+        setMessages([...messages, newMessage]);
         setInput("");
-    }
+    };
 
     return (
         <Box
@@ -39,7 +68,7 @@ function ChatLayout() {
                 }}
             >
                 <Typography variant="h6" fontWeight="bold">
-                    Session Name
+                    {session?.name || "Session"}
                 </Typography>
             </Paper>
 
@@ -51,8 +80,15 @@ function ChatLayout() {
                 display="flex"
                 flexDirection="column"
             >
-                {messages.map((msg, i) => (
-                    <ChatMessage key={i} role={msg.role} content={msg.content} />
+                {messages.map((msg) => (
+                    <ChatMessage 
+                        key={msg.id} 
+                        text={msg.text}
+                        senderId={msg.senderId} 
+                        senderName={msg.senderName}
+                        time={msg.time}
+                        isOwn={msg.isOwn}
+                    />
                 ))}
             </Box>
             
