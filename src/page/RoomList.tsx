@@ -4,9 +4,9 @@ import { Link } from "react-router-dom";
 function RoomsList() {
   return (
     <ul>
-      {data.rooms.map((room) => (
-        <li key={room.roomId}>
-          <Link to={`/rooms/${room.roomId}`}>
+      {data.sessions.map((room) => (
+        <li key={room.sessionsId}>
+          <Link to={`/rooms/${room.sessionsId}`}>
             {room.name}
           </Link>
         </li>

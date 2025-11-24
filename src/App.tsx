@@ -13,11 +13,12 @@ function App(){
       <Route path="/login" element={<LoginPage />} />
       <Route path="/" element={<MainPage />} />
       <Route path="/sessions" element={<SessionsPage />} />
+      <Route path="/sessions/chat" element={<SessionsPageChat />} />
       
       {/* test */}
       <Route path="/roomList" element={<RoomsList />} />
       <Route path="/rooms/:roomId" element={<RoomChat />} />
-      <Route path="/sessionsChat" element={<SessionsPageChat />} />
+      
     </Routes>
   )
 }

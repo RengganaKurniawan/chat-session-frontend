@@ -2,8 +2,8 @@ import { useParams } from "react-router-dom";
 import data from "../data/chatData.json";
 
 function RoomChat() {
-  const { roomId } = useParams();
-  const room = data.rooms.find(r => r.roomId === Number(roomId));
+  const { sessionsId } = useParams();
+  const room = data.sessions.find(r => r.sessionsId === Number(sessionsId));
 
   if (!room) return <p>Room not found.</p>;
 
