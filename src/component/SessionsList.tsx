@@ -23,6 +23,8 @@ import AddIcon from "@mui/icons-material/Add";
 import CloseIcon from "@mui/icons-material/Close";
 import FilterAltOutlinedIcon from "@mui/icons-material/FilterAltOutlined";
 
+import chatData from "../data/chatData.json"
+
 const DefaultSortIcon = () => (
   <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
     <path
@@ -46,7 +48,7 @@ interface Session {
   id: number;
   title: string;
   date: string;
-  status: string;
+  isActive: boolean;
 }
 
 interface SessionsListProps {
@@ -70,20 +72,15 @@ function SessionsList({ onSessionSelect, isCompact, selectedSession }: SessionsL
   const [statusAnchor, setStatusAnchor] = useState<HTMLElement | null>(null);
 
   // Sessions
-  const [sessions, setSessions] = useState<Session[]>([
-    { id: 1, title: "Chat Room 1", date: "Date 1", status: "Active" },
-    { id: 2, title: "Chat Room 2", date: "Date 1", status: "Active" },
-    { id: 3, title: "Chat Room 3", date: "Date 1", status: "Active" },
-    { id: 4, title: "Chat Room 4", date: "Date 2", status: "Active" },
-    { id: 5, title: "Chat Room 5", date: "Date 2", status: "Inactive" },
-    { id: 6, title: "Chat Room 6", date: "Date 2", status: "Active" },
-    { id: 7, title: "Chat Room 7", date: "Date 3", status: "Inactive" },
-    { id: 8, title: "Chat Room 8", date: "Date 3", status: "Active" },
-    { id: 9, title: "Chat Room 9", date: "Date 3", status: "Active" },
-    { id: 10, title: "Chat Room 10", date: "Date 4", status: "Inactive" },
-    { id: 11, title: "Chat Room 11", date: "Date 4", status: "Active" },
-    { id: 12, title: "Chat Room 12", date: "Date 4", "status": "Active" }
-  ]);
+
+  const initialSessions: Session[] = chatData.sessions.map((s) => ({
+    id: s.sessionsId,
+    title: s.name,
+    date: s.date, 
+    isActive: s.isActive
+  }));
+
+  const [sessions, setSessions] = useState<Session[]>(initialSessions);
 
   // ADD SESSION 
   const [openDialog, setOpenDialog] = useState(false);
@@ -95,8 +92,8 @@ function SessionsList({ onSessionSelect, isCompact, selectedSession }: SessionsL
     const newSession: Session = {
       id: sessions.length + 1,
       title: newTitle,
-      date: "Today",
-      status: "Active"
+      date: new Date().toLocaleDateString(),
+      isActive: true,
     };
 
     setSessions([...sessions, newSession]);
@@ -107,8 +104,6 @@ function SessionsList({ onSessionSelect, isCompact, selectedSession }: SessionsL
   // filters masing2 kolom
   const uniqueTitles = [...new Set(sessions.map((s) => s.title))];
   const uniqueDates = [...new Set(sessions.map((s) => s.date))];
-  const uniqueStatuses = [...new Set(sessions.map((s) => s.status))];
-
  
   const toggleFilter = (value: string, filterArray: string[], setFilter: (arr: string[]) => void) => {
     if (filterArray.includes(value)) {
@@ -132,9 +127,11 @@ function SessionsList({ onSessionSelect, isCompact, selectedSession }: SessionsL
     const matchesSearch = session.title.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesTitle = titleFilter.length === 0 || titleFilter.includes(session.title);
     const matchesDate = dateFilter.length === 0 || dateFilter.includes(session.date);
-    const matchesStatus = statusFilter.length === 0 || statusFilter.includes(session.status);
 
-    return matchesSearch && matchesTitle && matchesDate && matchesStatus;
+    const statusString = session.isActive ? "Active" : "Inactive"
+    const mathchesStatus = statusFilter.length === 0 || statusFilter.includes(statusString)
+
+    return matchesSearch && matchesTitle && matchesDate && mathchesStatus;
   });
 
   return (
@@ -185,6 +182,7 @@ function SessionsList({ onSessionSelect, isCompact, selectedSession }: SessionsL
             }}
           />
         </Box>
+
         <Box
           sx={{
             p: 2,
@@ -280,7 +278,7 @@ function SessionsList({ onSessionSelect, isCompact, selectedSession }: SessionsL
                 {!isCompact && (
                   <>
                     <TableCell>{session.date}</TableCell>
-                    <TableCell>{session.status}</TableCell>
+                    <TableCell>{session.isActive ? "Active" : "Inactive"}</TableCell>
                   </>
                 )}
               </TableRow>
@@ -324,7 +322,7 @@ function SessionsList({ onSessionSelect, isCompact, selectedSession }: SessionsL
         open={Boolean(statusAnchor)}
         onClose={() => setStatusAnchor(null)}
       >
-        {uniqueStatuses.map((status) => (
+        {["Active", "Inactive"].map((status) => (
           <MenuItem
             key={status}
             onClick={() => toggleFilter(status, statusFilter, setStatusFilter)}

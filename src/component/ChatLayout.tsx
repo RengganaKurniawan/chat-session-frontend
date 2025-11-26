@@ -9,9 +9,13 @@ import usersData from "../data/users.json";
 // implement sama login
 const LOGGED_IN_USER_ID = 1;
 
-function ChatLayout() {
+interface ChatLayoutProps {
+    sessionId: number;
+}
+
+function ChatLayout({ sessionId }: ChatLayoutProps) {
     // contoh chat room 1
-    const session = chatData.sessions.find(s => s.sessionsId === 1);
+    const session = chatData.sessions.find(s => s.sessionsId === sessionId);
 
     const initialMessages = 
         session?.messages.map(m => {

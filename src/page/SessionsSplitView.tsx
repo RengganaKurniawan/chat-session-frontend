@@ -1,13 +1,14 @@
 import { useState } from 'react';
-import { Box, CssBaseline } from '@mui/material';
+import { Box, CssBaseline, Typography } from '@mui/material';
 import LeftNav from '../component/LeftNav';
 import SessionsList from '../component/SessionsList';
+import ChatLayout from '../component/ChatLayout';
 
 interface Session {
   id: number;
   title: string;
   date: string;
-  status: string;
+  isActive: boolean;
 }
 
 const SessionsSplitView = () => {
@@ -19,11 +20,6 @@ const SessionsSplitView = () => {
     setIsCompact(true);
   };
 
-  const handleCloseChat = () => {
-    setSelectedSession(null);
-    setIsCompact(false);
-  };
-
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
@@ -33,15 +29,17 @@ const SessionsSplitView = () => {
         sx={{
           flexGrow: 1,
           bgcolor: 'background.default',
-          p: 3,
           display: 'flex',
           gap: 2,
+          height: '100vh',
+          overflow: 'hidden'
         }}
       >
         <Box sx={{
-          flex: isCompact ? '0 0 300px' : '1',
+          flex: isCompact ? '0 0 400px' : '1',
           transition: 'flex 0.3s ease-in-out',
           overflow: 'hidden',
+          borderRight: '1px solid #e0e0e0'
         }}>
           <SessionsList
             onSessionSelect={handleSessionSelect}
@@ -49,11 +47,19 @@ const SessionsSplitView = () => {
             selectedSession={selectedSession}
           />
         </Box>
-        {selectedSession && (
-          <Box sx={{ flex: '1' }}>
-            {/* <ChatRoomUI session={selectedSession} onClose={handleCloseChat} /> */}
-          </Box>
-        )}
+
+        <Box sx={{ flex: '1', display: 'flex', flexDirection: 'column' }}>
+            {selectedSession ? (
+                <ChatLayout 
+                    key={selectedSession.id} 
+                    sessionId={selectedSession.id} 
+                />
+            ) : (
+                <Box display="flex" justifyContent="center" alignItems="center" height="100%">
+                     <Typography color="text.secondary">Select a session to start chatting</Typography>
+                </Box>
+            )}
+        </Box>
       </Box>
     </Box>
   );
