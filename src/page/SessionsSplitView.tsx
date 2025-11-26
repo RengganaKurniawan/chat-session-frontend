@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Box, CssBaseline, Typography } from '@mui/material';
+import { Box, CssBaseline} from '@mui/material';
 import LeftNav from '../component/LeftNav';
 import SessionsList from '../component/SessionsList';
 import ChatLayout from '../component/ChatLayout';
@@ -20,6 +20,11 @@ const SessionsSplitView = () => {
     setIsCompact(true);
   };
 
+  const handleCloseChat = () => {
+    setSelectedSession(null); 
+    setIsCompact(false);      
+  };
+
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
@@ -30,7 +35,6 @@ const SessionsSplitView = () => {
           flexGrow: 1,
           bgcolor: 'background.default',
           display: 'flex',
-          gap: 2,
           height: '100vh',
           overflow: 'hidden'
         }}
@@ -53,6 +57,7 @@ const SessionsSplitView = () => {
                 <ChatLayout 
                     key={selectedSession.id} 
                     sessionId={selectedSession.id} 
+                    onClose={handleCloseChat}
                 />
             </Box>
         )}

@@ -1,6 +1,7 @@
 import { Box, IconButton, Paper, TextField, Typography } from "@mui/material";
 import { useState } from "react";
 import SendIcon from "@mui/icons-material/Send";
+import CloseIcon from "@mui/icons-material/Close";
 import ChatMessage from "./ChatMessage";
 
 import chatData from "../data/chatData.json";
@@ -11,9 +12,10 @@ const LOGGED_IN_USER_ID = 1;
 
 interface ChatLayoutProps {
     sessionId: number;
+    onClose: () => void;
 }
 
-function ChatLayout({ sessionId }: ChatLayoutProps) {
+function ChatLayout({ sessionId, onClose }: ChatLayoutProps) {
     // contoh chat room 1
     const session = chatData.sessions.find(s => s.sessionsId === sessionId);
 
@@ -69,11 +71,18 @@ function ChatLayout({ sessionId }: ChatLayoutProps) {
                     position: "sticky",
                     top: 0,
                     zIndex: 10,
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
                 }}
             >
                 <Typography variant="h6" fontWeight="bold">
                     {session?.name || "Session"}
                 </Typography>
+
+                <IconButton onClick={onClose}>
+                    <CloseIcon />
+                </IconButton>
             </Paper>
 
             {/* main chat */}
