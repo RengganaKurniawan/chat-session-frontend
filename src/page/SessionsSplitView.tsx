@@ -39,7 +39,7 @@ const SessionsSplitView = () => {
           flex: isCompact ? '0 0 400px' : '1',
           transition: 'flex 0.3s ease-in-out',
           overflow: 'hidden',
-          borderRight: '1px solid #e0e0e0'
+          borderRight: isCompact ? '1px solid #e0e0e0' : "none"
         }}>
           <SessionsList
             onSessionSelect={handleSessionSelect}
@@ -48,18 +48,14 @@ const SessionsSplitView = () => {
           />
         </Box>
 
-        <Box sx={{ flex: '1', display: 'flex', flexDirection: 'column' }}>
-            {selectedSession ? (
+        {selectedSession && (
+            <Box sx={{ flex: '1', display: 'flex', flexDirection: 'column' }}>
                 <ChatLayout 
                     key={selectedSession.id} 
                     sessionId={selectedSession.id} 
                 />
-            ) : (
-                <Box display="flex" justifyContent="center" alignItems="center" height="100%">
-                     <Typography color="text.secondary">Select a session to start chatting</Typography>
-                </Box>
-            )}
-        </Box>
+            </Box>
+        )}
       </Box>
     </Box>
   );
