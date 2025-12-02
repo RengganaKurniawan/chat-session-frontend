@@ -32,6 +32,8 @@ function ChatLayout({ sessionId, onClose }: ChatLayoutProps) {
                 senderId: m.senderId,
                 senderName: sender?.name || "Unknown",
                 isOwn: m.senderId === LOGGED_IN_USER_ID,
+                likes: m.likes,
+                dislikes: m.dislikes,
             }
         }) || [];
 
@@ -53,6 +55,8 @@ function ChatLayout({ sessionId, onClose }: ChatLayoutProps) {
             senderId: LOGGED_IN_USER_ID,
             senderName: usersData.users.find(u => u.id === LOGGED_IN_USER_ID)?.name || "Me",
             isOwn: true,
+            likes: 0,
+            dislikes: 0,
         };
 
         setMessages([...messages, newMessage]);
@@ -114,6 +118,8 @@ function ChatLayout({ sessionId, onClose }: ChatLayoutProps) {
                         senderName={msg.senderName}
                         time={msg.time}
                         isOwn={msg.isOwn}
+                        likes={msg.likes || 0}
+                        dislikes={msg.dislikes || 0}
                     />
                 ))}
             </Box>
