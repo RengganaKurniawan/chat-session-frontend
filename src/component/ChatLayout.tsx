@@ -1,41 +1,36 @@
-import { Box, IconButton, Paper, TextField, Typography } from "@mui/material";
-import { useState } from "react";
+import { Box, IconButton, LinearProgress, Paper, TextField, Typography } from "@mui/material";
+import { useEffect, useRef, useState } from "react";
 import SendIcon from "@mui/icons-material/Send";
 import CloseIcon from "@mui/icons-material/Close";
 import ChatMessage from "./ChatMessage";
 
-import chatData from "../data/chatData.json";
-import usersData from "../data/users.json";
-
-// implement sama login
-const LOGGED_IN_USER_ID = 1;
-
+import aiData from "../data/aiChatData.json";
 interface ChatLayoutProps {
     sessionId: number;
     onClose: () => void;
 }
 
 function ChatLayout({ sessionId, onClose }: ChatLayoutProps) {
-    // contoh chat room 1
-    const session = chatData.sessions.find(s => s.sessionsId === sessionId);
+    const [messages, setMessages] = useState<any[]>([]);
+    const [input, setInput] = useState("");
+    const [isAiTyping, setIsAiTyping] = useState(false);
 
-    const initialMessages = 
-        session?.messages.map(m => {
-            const sender = usersData.users.find(u => u.id === m.senderId);
+    // autoscroll chat baru
+    const messagesEndRef = useRef<null | HTMLDivElement>(null);
 
-            return {
-                id: m.id,
-                text: m.text,
-                time: m.time,
-                senderId: m.senderId,
-                senderName: sender?.name || "Unknown",
-                isOwn: m.senderId === LOGGED_IN_USER_ID,
-            }
-        }) || [];
+    useEffect(() => {
+        const session = aiData.sessions.find(s => s.id === sessionId);
+        if(session){
+            setMessages(session.messages);
+        } else {
+            setMessages([]);
+        }
+    }, [sessionId])
 
-    const [messages, setMessages] = useState(initialMessages);
-    const [ input, setInput ] = useState("")
-
+    useEffect(() => {
+        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    }, [messages, isAiTyping]);
+    
     const handleSend = () => {
         if (!input.trim()) return;
 
@@ -43,18 +38,32 @@ function ChatLayout({ sessionId, onClose }: ChatLayoutProps) {
         const time =
             now.getHours() + ":" + now.getMinutes().toString().padStart(2, "0");
 
-        const newMessage = {
-            id: messages.length + 1,
+        const userMsg = {
+            id: Date.now(), // simple unique ID
+            role: "user",
             text: input.trim(),
-            time,
-            senderId: LOGGED_IN_USER_ID,
-            senderName: usersData.users.find(u => u.id === LOGGED_IN_USER_ID)?.name || "Me",
-            isOwn: true,
+            time: time,
         };
 
-        setMessages([...messages, newMessage]);
+        const updatedMessages = [...messages, userMsg];
+        setMessages(updatedMessages);
         setInput("");
+        setIsAiTyping(true);
+
+        setTimeout(() => {
+            const aiMsg = {
+                id: Date.now() + 1,
+                role: "assistant",
+                text: "I am a simulated AI. I received your message: " + input, 
+                time: time,
+            };
+            
+            setMessages((prev) => [...prev, aiMsg]);
+            setIsAiTyping(false);
+        }, 1500);
     };
+
+    const currentSessionName = aiData.sessions.find(s => s.id === sessionId)?.name;
 
     return (
         <Box
@@ -77,7 +86,7 @@ function ChatLayout({ sessionId, onClose }: ChatLayoutProps) {
                 }}
             >
                 <Typography variant="h6" fontWeight="bold">
-                    {session?.name || "Session"}
+                    {currentSessionName || "New Chat"}
                 </Typography>
 
                 <IconButton onClick={onClose}>
@@ -97,12 +106,21 @@ function ChatLayout({ sessionId, onClose }: ChatLayoutProps) {
                     <ChatMessage 
                         key={msg.id} 
                         text={msg.text}
-                        senderId={msg.senderId} 
-                        senderName={msg.senderName}
+                        senderId={msg.role === "user" ? 1 : 2} 
+                        senderName={msg.role === "user" ? "You" : "AI Assistant"}
                         time={msg.time}
-                        isOwn={msg.isOwn}
+                        isOwn={msg.role === "user"}
                     />
                 ))}
+
+                {isAiTyping && (
+                   <Box sx={{ width: '100%', mb: 2 }}>
+                       <Typography variant="caption" color="text.secondary">AI is thinking...</Typography>
+                       <LinearProgress sx={{ maxWidth: "200px", mt: 1 }} />
+                   </Box>
+                )}
+                
+                <div ref={messagesEndRef} />
             </Box>
             
             {/* input box */}
@@ -119,12 +137,14 @@ function ChatLayout({ sessionId, onClose }: ChatLayoutProps) {
                         fullWidth
                         placeholder="Type a message"
                         value={input}
+                        disabled={isAiTyping}
                         onChange={(e) => setInput(e.target.value)}
-                        onKeyDown={(e) => e.key === "Enter" && handleSend()}
+                        onKeyDown={(e) => e.key === "Enter" && !isAiTyping && handleSend()}
                     />
                     <IconButton
                         color="primary"
                         onClick={handleSend}
+                        disabled={isAiTyping || !input.trim()}
                         sx={{ width: 50, height: 50 }}
                     >
                         <SendIcon />

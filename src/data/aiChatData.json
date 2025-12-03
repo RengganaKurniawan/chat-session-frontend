@@ -1,0 +1,67 @@
+{
+  "sessions": [
+    {
+      "id": 1,
+      "userId": 1,
+      "name": "Python Tutor",
+      "date": "2025-12-01",
+      "isActive": true,
+      "messages": [
+        {
+          "id": 101,
+          "role": "assistant",
+          "text": "Hello! I am your Python helper.",
+          "time": "10:00"
+        },
+        {
+          "id": 102,
+          "role": "user",
+          "text": "How do I filter a list?",
+          "time": "10:02"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "userId": 1,
+      "name": "Creative Assistant",
+      "date": "2025-12-02",
+      "isActive": true,
+      "messages": [
+        {
+          "id": 201,
+          "role": "user",
+          "text": "Write me a poem about React.",
+          "time": "08:15"
+        },
+        {
+          "id": 202,
+          "role": "assistant",
+          "text": "In components deep where logic lies...",
+          "time": "08:15"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "userId": 2,
+      "name": "User 2's Secret Project",
+      "date": "2025-12-05",
+      "isActive": true,
+      "messages": [
+        {
+          "id": 301,
+          "role": "assistant",
+          "text": "Welcome back, User 2. Ready to continue?",
+          "time": "09:00"
+        },
+        {
+          "id": 302,
+          "role": "user",
+          "text": "Yes, let's talk about the database schema.",
+          "time": "09:05"
+        }
+      ]
+    }
+  ]
+}
