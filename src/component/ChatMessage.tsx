@@ -1,4 +1,9 @@
-import { Box, Paper, Typography } from "@mui/material";
+import { Box, Paper, Typography, Link } from "@mui/material";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import remarkMath from "remark-math";
+import rehypeKatex from "rehype-katex";
+import "katex/dist/katex.min.css";
 
 interface ChatMessageProps {
     text: string;
@@ -30,6 +35,7 @@ function ChatMessage({
                     minWidth: "150px",
                     bgcolor: isOwn ? "#DCF8C6" : "#ffffff",
                     borderRadius: 2,
+                    "& img": { maxWidth: "100%" },
                 }}
             >
                 {/* sender name */}
@@ -47,17 +53,43 @@ function ChatMessage({
                 </Typography>
 
                 {/* message text */}
-                <Typography 
-                    variant="body2" 
-                    sx={{ 
-                        whiteSpace: "pre-wrap",
+                <Box
+                    sx={{
+                        "& p": { margin: 0 },
+                        color: "text.primary",
+                        fontSize: "0.875rem",
                         lineHeight: 1.2,
-
                         wordBreak: "break-word",
                         overflowWrap: "anywhere",
-                    }}>
-                    {text}
-                </Typography>
+                        "& .katex": { fontSize: "1.1em" },
+                    }}
+                >
+                    <ReactMarkdown
+                        remarkPlugins={[remarkGfm, remarkMath]}
+                        rehypePlugins={[rehypeKatex]}
+                        components={{
+                            a: ({ href, children}) => (
+                                <Link 
+                                    href={href} 
+                                    target="_blank" 
+                                    rel="noopener noreferrer" 
+                                    underline="hover"
+                                    color="primary"
+                                >
+                                    {children}
+                                </Link>
+                            ),
+                            p: ({children}) => (
+                                <Typography variant="body2" component="p">
+                                    {children}
+                                </Typography>
+                            ),
+                        }}
+                    >
+                        {text}
+                    </ReactMarkdown>
+
+                </Box>
 
                 {/* time */}
                 <Typography
