@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Box,
   IconButton,
@@ -22,8 +22,7 @@ import {
 import AddIcon from "@mui/icons-material/Add";
 import CloseIcon from "@mui/icons-material/Close";
 import FilterAltOutlinedIcon from "@mui/icons-material/FilterAltOutlined";
-
-import chatData from "../data/chatData.json"
+import aiChatData from "../data/aiChatData.json";
 
 const DefaultSortIcon = () => (
   <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -49,15 +48,17 @@ interface Session {
   title: string;
   date: string;
   isActive: boolean;
+  userId?: number;
 }
 
 interface SessionsListProps {
   onSessionSelect: (session: Session) => void;
   isCompact: boolean;
   selectedSession: Session | null;
+  currentUserId: number;
 }
 
-function SessionsList({ onSessionSelect, isCompact, selectedSession }: SessionsListProps) {
+function SessionsList({ onSessionSelect, isCompact, selectedSession, currentUserId }: SessionsListProps) {
   const [searchQuery, setSearchQuery] = useState("");
   const [, setSortBy] = useState("default");
 
@@ -70,17 +71,26 @@ function SessionsList({ onSessionSelect, isCompact, selectedSession }: SessionsL
   const [titleAnchor, setTitleAnchor] = useState<HTMLElement | null>(null);
   const [dateAnchor, setDateAnchor] = useState<HTMLElement | null>(null);
   const [statusAnchor, setStatusAnchor] = useState<HTMLElement | null>(null);
-
+  
   // Sessions
+  const [sessions, setSessions] = useState<Session[]>([]);
+  useEffect(() => {
+    const userSpecificData = aiChatData.sessions.filter(
+        (s) => s.userId === currentUserId
+    );
 
-  const initialSessions: Session[] = chatData.sessions.map((s) => ({
-    id: s.sessionsId,
-    title: s.name,
-    date: s.date, 
-    isActive: s.isActive
-  }));
+    const formattedSessions = userSpecificData.map((s) => ({
+        id: s.id,
+        title: s.name,
+        date: s.date || new Date().toLocaleDateString(), 
+        isActive: s.isActive !== undefined ? s.isActive : true,
+        userId: s.userId
+    }));
 
-  const [sessions, setSessions] = useState<Session[]>(initialSessions);
+    setSessions(formattedSessions);
+
+    setTitleFilter([]); 
+  }, [currentUserId]);
 
   // ADD SESSION 
   const [openDialog, setOpenDialog] = useState(false);
@@ -94,6 +104,7 @@ function SessionsList({ onSessionSelect, isCompact, selectedSession }: SessionsL
       title: newTitle,
       date: new Date().toLocaleDateString(),
       isActive: true,
+      userId: currentUserId,
     };
 
     setSessions([...sessions, newSession]);
