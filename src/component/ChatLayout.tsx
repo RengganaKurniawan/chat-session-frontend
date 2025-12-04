@@ -1,8 +1,10 @@
-import { Box, IconButton, Paper, TextField, Typography } from "@mui/material";
+import { Box, IconButton, Paper, TextField, Typography, InputAdornment } from "@mui/material";
 import { useState } from "react";
 import SendIcon from "@mui/icons-material/Send";
 import CloseIcon from "@mui/icons-material/Close";
+import AddIcon from "@mui/icons-material/Add";
 import ChatMessage from "./ChatMessage";
+import AvailableActions from "./AvailableActions";
 
 import chatData from "../data/chatData.json";
 import usersData from "../data/users.json";
@@ -30,11 +32,14 @@ function ChatLayout({ sessionId, onClose }: ChatLayoutProps) {
                 senderId: m.senderId,
                 senderName: sender?.name || "Unknown",
                 isOwn: m.senderId === LOGGED_IN_USER_ID,
+                likes: m.likes,
+                dislikes: m.dislikes,
             }
         }) || [];
 
     const [messages, setMessages] = useState(initialMessages);
     const [ input, setInput ] = useState("")
+    const [showActions, setShowActions] = useState(false);
 
     const handleSend = () => {
         if (!input.trim()) return;
@@ -50,10 +55,22 @@ function ChatLayout({ sessionId, onClose }: ChatLayoutProps) {
             senderId: LOGGED_IN_USER_ID,
             senderName: usersData.users.find(u => u.id === LOGGED_IN_USER_ID)?.name || "Me",
             isOwn: true,
+            likes: 0,
+            dislikes: 0,
         };
 
         setMessages([...messages, newMessage]);
         setInput("");
+    };
+
+    const handleSelectAction = (action: string) => {
+        setInput(action);
+        setShowActions(false);
+    };
+
+    const handleFileUpload = (fileName: string) => {
+        setInput(fileName);
+        setShowActions(false);
     };
 
     return (
@@ -101,6 +118,8 @@ function ChatLayout({ sessionId, onClose }: ChatLayoutProps) {
                         senderName={msg.senderName}
                         time={msg.time}
                         isOwn={msg.isOwn}
+                        likes={msg.likes || 0}
+                        dislikes={msg.dislikes || 0}
                     />
                 ))}
             </Box>
@@ -114,6 +133,13 @@ function ChatLayout({ sessionId, onClose }: ChatLayoutProps) {
                     bottom: 0,
                 }}
             >
+                {showActions && (
+                    <AvailableActions
+                        onClose={() => setShowActions(false)}
+                        onSelectAction={handleSelectAction}
+                        onFileUpload={handleFileUpload}
+                    />
+                )}
                 <Box display="flex" gap={1}>
                     <TextField
                         fullWidth
@@ -121,6 +147,29 @@ function ChatLayout({ sessionId, onClose }: ChatLayoutProps) {
                         value={input}
                         onChange={(e) => setInput(e.target.value)}
                         onKeyDown={(e) => e.key === "Enter" && handleSend()}
+                        sx={{
+                            '& .MuiOutlinedInput-root': {
+                                borderRadius: '20px',
+                                '& fieldset': {
+                                    borderColor: '#e0e0e0',
+                                },
+                                '&:hover fieldset': {
+                                    borderColor: '#c0c0c0',
+                                },
+                                '&.Mui-focused fieldset': {
+                                    borderColor: '#a0a0a0',
+                                },
+                            },
+                        }}
+                        InputProps={{
+                            startAdornment: (
+                                <InputAdornment position="start">
+                                    <IconButton onClick={() => setShowActions(!showActions)}>
+                                        {showActions ? <CloseIcon /> : <AddIcon />}
+                                    </IconButton>
+                                </InputAdornment>
+                            ),
+                        }}
                     />
                     <IconButton
                         color="primary"
