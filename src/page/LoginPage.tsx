@@ -17,7 +17,7 @@ import {
 
 const GoogleIcon = () => (
   <img 
-    src="src/assets/google_logo.png" 
+    src="src/assets/Google_logo.png" 
     alt="Google" 
     style={{ width: 20, height: 20 }} 
   />
@@ -25,7 +25,7 @@ const GoogleIcon = () => (
 
 const MicrosoftIcon = () => (
   <img 
-    src="src/assets/ms_logo.svg" 
+    src="src/assets/Microsoft_logo.png" 
     alt="Microsoft" 
     style={{ width: 20, height: 20 }} 
   />
