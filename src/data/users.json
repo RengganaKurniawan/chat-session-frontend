@@ -1,24 +1,53 @@
 {
-    "users": [
-        {
-            "id": 1,
-            "name": "John Doe"
-        },
-        {
-            "id": 2,
-            "name": "Alice"
-        },
-        {
-            "id": 3,
-            "name": "max imumoccupancy"
-        },
-        {
-            "id": 4,
-            "name": "Allison Burger"
-        },
-        {
-            "id": 5,
-            "name": "Dani"
-        }
-    ]
+  "users": [
+    {
+      "id": 1,
+      "name": "Alice Johnson",
+      "email": "alice.j@example.com",
+      "password": "password"
+
+    },
+    {
+      "id": 2,
+      "name": "Bob Williams",
+      "email": "bob.w@example.com",
+      "password": "password"
+    },
+    {
+      "id": 3,
+      "name": "Charlie Brown",
+      "email": "charlie.b@example.com",
+      "password": "password"
+    },
+    {
+      "id": 4,
+      "name": "Diana Prince",
+      "email": "diana.p@example.com",
+      "password": "password"
+    },
+    {
+      "id": 5,
+      "name": "Evan Davis",
+      "email": "evan.d@example.com",
+      "password": "password"
+    },
+    {
+      "id": 6,
+      "name": "Fiona Gallagher",
+      "email": "fiona.g@example.com",
+      "password": "password"
+    },
+    {
+      "id": 7,
+      "name": "George Harrison",
+      "email": "george.h@example.com",
+      "password": "password"
+    },
+    {
+      "id": 8,
+      "name": "Hannah Montana",
+      "email": "hannah.m@example.com",
+      "password": "password"
+    }
+  ]
 }
