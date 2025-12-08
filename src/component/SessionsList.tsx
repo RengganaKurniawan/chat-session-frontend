@@ -77,7 +77,6 @@ function SessionsList({ onSessionSelect, isCompact, selectedSession, currentUser
   const [openDialog, setOpenDialog] = useState(false);
   const [newTitle, setNewTitle] = useState("");
 
-  // Load sessions
   useEffect(() => {
     const userSpecificData = aiChatData.sessions.filter((s) => s.userId === currentUserId);
     const formattedSessions = userSpecificData.map((s) => ({
@@ -93,10 +92,14 @@ function SessionsList({ onSessionSelect, isCompact, selectedSession, currentUser
   const handleAddSession = () => {
     if (!newTitle.trim()) return;
 
+    // Format date as YYYY-MM-DD
+    const today = new Date();
+    const formattedDate = today.toISOString().split('T')[0];
+
     const newSession: Session = {
       id: sessions.length + 1,
       title: newTitle,
-      date: new Date().toLocaleDateString(),
+      date: formattedDate,
       isActive: true,
       userId: currentUserId
     };
@@ -124,7 +127,6 @@ function SessionsList({ onSessionSelect, isCompact, selectedSession, currentUser
     setPage(1);
   };
 
-  // Filter sessions
   let filteredSessions = sessions.filter((session) => {
     const matchesTitle = session.title.toLowerCase().includes(searchTitleQuery.toLowerCase());
     const matchesDate = session.date.toLowerCase().includes(searchDateQuery.toLowerCase());
@@ -133,7 +135,6 @@ function SessionsList({ onSessionSelect, isCompact, selectedSession, currentUser
     return matchesTitle && matchesDate && matchesStatus;
   });
 
-  // Sorting
   if (sortColumn && sortOrder) {
     filteredSessions.sort((a, b) => {
       let compareValue = 0;
@@ -145,134 +146,223 @@ function SessionsList({ onSessionSelect, isCompact, selectedSession, currentUser
     });
   }
 
-  const totalPages = Math.ceil(filteredSessions.length / rowsPerPage);
-  const paginatedSessions = filteredSessions.slice((page - 1) * rowsPerPage, page * rowsPerPage);
+  const paginatedSessions = !isCompact
+    ? filteredSessions.slice((page - 1) * rowsPerPage, page * rowsPerPage)
+    : filteredSessions;
 
-  const handlePageChange = (_event: React.ChangeEvent<unknown>, value: number) => {
-    setPage(value);
-  };
+  const totalPages = Math.ceil(filteredSessions.length / rowsPerPage);
 
   return (
     <Box sx={{ minHeight: "100vh", bgcolor: "white", p: 4, flexGrow: 1 }}>
-      <Box sx={{ p: 3, display: "flex", justifyContent: "space-between", alignItems: "center", borderBottom: "1px solid white" }}>
-        <Typography variant="h6" fontWeight={600}>Chat Sessions</Typography>
-        <IconButton sx={{ border: "2px solid #000" }} onClick={() => setOpenDialog(true)}>
-          <AddIcon sx={{ color: "#000" }} />
+      <Box sx={{ p: isCompact ? 1.5 : 3, display: "flex", justifyContent: "space-between", alignItems: "center", borderBottom: "1px solid white" }}>
+        <Typography variant={isCompact ? "subtitle1" : "h6"} fontWeight={600}>Chat Sessions</Typography>
+        <IconButton 
+          size={isCompact ? "small" : "medium"}
+          sx={{ border: isCompact ? "1.5px solid #000" : "2px solid #000" }} 
+          onClick={() => setOpenDialog(true)}
+        >
+          <AddIcon sx={{ color: "#000", fontSize: isCompact ? "18px" : "24px" }} />
         </IconButton>
       </Box>
 
-      {/* Search Filters */}
-      <Box sx={{ p: 2, borderBottom: "1px solid", display: "flex", gap: 2, alignItems: "center", flexWrap: "wrap" }}>
-        <Button onClick={resetFilters} sx={{ textTransform: "none", borderRadius: "40px", px: 2.5, py: 1, display: "flex", alignItems: "center", gap: 1, border: "1px solid white", bgcolor: "white", boxShadow: "0 1px 3px rgba(0,0,0,0.12)" }}>
+      {/* FILTERS */}
+      <Box
+        sx={{
+          p: isCompact ? 1 : 2,
+          borderBottom: "1px solid",
+          display: "flex",
+          gap: isCompact ? 1 : 2,
+          alignItems: "center",
+          flexWrap: "wrap"
+        }}
+      >
+        <Button
+          onClick={resetFilters}
+          sx={{
+            textTransform: "none",
+            borderRadius: "40px",
+            px: 2.5,
+            py: 1,
+            display: "flex",
+            alignItems: "center",
+            gap: 1,
+            border: "1px solid white",
+            bgcolor: "white",
+            boxShadow: "0 1px 3px rgba(0,0,0,0.12)"
+          }}
+        >
           <DefaultSortIcon />
           <Typography fontWeight={500}>Default</Typography>
         </Button>
 
+       
         <TextField
           variant="outlined"
           placeholder="Search by title..."
           value={searchTitleQuery}
           onChange={(e) => setSearchTitleQuery(e.target.value)}
           size="small"
-          sx={{ minWidth: "200px", "& .MuiOutlinedInput-root": { borderRadius: "40px" } }}
+          sx={{ 
+            minWidth: isCompact ? "100%" : "200px",
+            flexGrow: isCompact ? 1 : 0,
+            "& .MuiOutlinedInput-root": { 
+              borderRadius: "40px",
+              fontSize: isCompact ? "0.875rem" : "1rem"
+            },
+            "& .MuiInputBase-input": {
+              padding: isCompact ? "6px 14px" : "8.5px 14px"
+            }
+          }}
           InputProps={{
             endAdornment: searchTitleQuery && (
               <InputAdornment position="end">
-                <IconButton onClick={() => setSearchTitleQuery("")} size="small"><CloseIcon fontSize="small" /></IconButton>
+                <IconButton onClick={() => setSearchTitleQuery("")} size="small">
+                  <CloseIcon fontSize="small" />
+                </IconButton>
               </InputAdornment>
             )
           }}
         />
 
-        <TextField
-          variant="outlined"
-          placeholder="Search by date..."
-          value={searchDateQuery}
-          onChange={(e) => setSearchDateQuery(e.target.value)}
-          size="small"
-          sx={{ minWidth: "200px", "& .MuiOutlinedInput-root": { borderRadius: "40px" } }}
-          InputProps={{
-            endAdornment: searchDateQuery && (
-              <InputAdornment position="end">
-                <IconButton onClick={() => setSearchDateQuery("")} size="small"><CloseIcon fontSize="small" /></IconButton>
-              </InputAdornment>
-            )
-          }}
-        />
+        {!isCompact && (
+          <>
+            <TextField
+              variant="outlined"
+              placeholder="Search by date..."
+              value={searchDateQuery}
+              onChange={(e) => setSearchDateQuery(e.target.value)}
+              size="small"
+              sx={{ minWidth: "200px", "& .MuiOutlinedInput-root": { borderRadius: "40px" } }}
+              InputProps={{
+                endAdornment: searchDateQuery && (
+                  <InputAdornment position="end">
+                    <IconButton onClick={() => setSearchDateQuery("")} size="small">
+                      <CloseIcon fontSize="small" />
+                    </IconButton>
+                  </InputAdornment>
+                )
+              }}
+            />
 
-        <TextField
-          variant="outlined"
-          placeholder="Search by status..."
-          value={searchStatusQuery}
-          onChange={(e) => setSearchStatusQuery(e.target.value)}
-          size="small"
-          sx={{ minWidth: "200px", "& .MuiOutlinedInput-root": { borderRadius: "40px" } }}
-          InputProps={{
-            endAdornment: searchStatusQuery && (
-              <InputAdornment position="end">
-                <IconButton onClick={() => setSearchStatusQuery("")} size="small"><CloseIcon fontSize="small" /></IconButton>
-              </InputAdornment>
-            )
-          }}
-        />
+            <TextField
+              variant="outlined"
+              placeholder="Search by status..."
+              value={searchStatusQuery}
+              onChange={(e) => setSearchStatusQuery(e.target.value)}
+              size="small"
+              sx={{ minWidth: "200px", "& .MuiOutlinedInput-root": { borderRadius: "40px" } }}
+              InputProps={{
+                endAdornment: searchStatusQuery && (
+                  <InputAdornment position="end">
+                    <IconButton onClick={() => setSearchStatusQuery("")} size="small">
+                      <CloseIcon fontSize="small" />
+                    </IconButton>
+                  </InputAdornment>
+                )
+              }}
+            />
+          </>
+        )}
       </Box>
 
-      <Table>
-        <TableHead sx={{ bgcolor: "white" }}>
-          <TableRow>
-            <TableCell>
-              <Box sx={{ display: "flex", alignItems: "center", gap: 1, cursor: "pointer" }} onClick={() => handleSort("title")}>
-                <Typography fontWeight={600}>Title</Typography>
-                {sortColumn !== "title" && <DefaultSortIcon />}
-                {sortColumn === "title" && sortOrder === "asc" && <ArrowUpwardIcon fontSize="small" />}
-                {sortColumn === "title" && sortOrder === "desc" && <ArrowDownwardIcon fontSize="small" />}
-              </Box>
-            </TableCell>
-            {!isCompact && (
-              <>
-                <TableCell>
-                  <Box sx={{ display: "flex", alignItems: "center", gap: 1, cursor: "pointer" }} onClick={() => handleSort("date")}>
-                    <Typography fontWeight={600}>Date</Typography>
-                    {sortColumn !== "date" && <DefaultSortIcon />}
-                    {sortColumn === "date" && sortOrder === "asc" && <ArrowUpwardIcon fontSize="small" />}
-                    {sortColumn === "date" && sortOrder === "desc" && <ArrowDownwardIcon fontSize="small" />}
-                  </Box>
-                </TableCell>
-                <TableCell>
-                  <Box sx={{ display: "flex", alignItems: "center", gap: 1, cursor: "pointer" }} onClick={() => handleSort("status")}>
-                    <Typography fontWeight={600}>Status</Typography>
-                    {sortColumn !== "status" && <DefaultSortIcon />}
-                    {sortColumn === "status" && sortOrder === "asc" && <ArrowUpwardIcon fontSize="small" />}
-                    {sortColumn === "status" && sortOrder === "desc" && <ArrowDownwardIcon fontSize="small" />}
-                  </Box>
-                </TableCell>
-              </>
-            )}
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {paginatedSessions.map((session) => (
-            <TableRow key={session.id} hover onClick={() => onSessionSelect(session)} selected={selectedSession?.id === session.id} sx={{ cursor: "pointer" }}>
-              <TableCell>{session.title}</TableCell>
+      {/* table */}
+      <Box
+        sx={{
+          ...(isCompact
+            ? {
+                maxHeight: "70vh",
+                overflowY: "auto",
+                pr: 1
+              }
+            : {})
+        }}
+      >
+        <Table>
+          <TableHead sx={{ bgcolor: "white" }}>
+            <TableRow>
+              <TableCell>
+                <Box
+                  sx={{ display: "flex", alignItems: "center", gap: 1, cursor: "pointer" }}
+                  onClick={() => handleSort("title")}
+                >
+                  <Typography fontWeight={600}>Title</Typography>
+                  {sortColumn !== "title" && <DefaultSortIcon />}
+                  {sortColumn === "title" && sortOrder === "asc" && <ArrowUpwardIcon fontSize="small" />}
+                  {sortColumn === "title" && sortOrder === "desc" && <ArrowDownwardIcon fontSize="small" />}
+                </Box>
+              </TableCell>
+
               {!isCompact && (
                 <>
-                  <TableCell>{session.date}</TableCell>
-                  <TableCell>{session.isActive ? "Active" : "Inactive"}</TableCell>
+                  <TableCell>
+                    <Box
+                      sx={{ display: "flex", alignItems: "center", gap: 1, cursor: "pointer" }}
+                      onClick={() => handleSort("date")}
+                    >
+                      <Typography fontWeight={600}>Date</Typography>
+                      {sortColumn !== "date" && <DefaultSortIcon />}
+                      {sortColumn === "date" && sortOrder === "asc" && <ArrowUpwardIcon fontSize="small" />}
+                      {sortColumn === "date" && sortOrder === "desc" && <ArrowDownwardIcon fontSize="small" />}
+                    </Box>
+                  </TableCell>
+
+                  <TableCell>
+                    <Box
+                      sx={{ display: "flex", alignItems: "center", gap: 1, cursor: "pointer" }}
+                      onClick={() => handleSort("status")}
+                    >
+                      <Typography fontWeight={600}>Status</Typography>
+                      {sortColumn !== "status" && <DefaultSortIcon />}
+                      {sortColumn === "status" && sortOrder === "asc" && <ArrowUpwardIcon fontSize="small" />}
+                      {sortColumn === "status" && sortOrder === "desc" && <ArrowDownwardIcon fontSize="small" />}
+                    </Box>
+                  </TableCell>
                 </>
               )}
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+          </TableHead>
 
-      <Box sx={{ display: "flex", justifyContent: "center", p: 3 }}>
-        <Pagination count={totalPages} page={page} onChange={handlePageChange} color="primary" />
+          <TableBody>
+            {paginatedSessions.map((session) => (
+              <TableRow
+                key={session.id}
+                hover
+                onClick={() => onSessionSelect(session)}
+                selected={selectedSession?.id === session.id}
+                sx={{ cursor: "pointer" }}
+              >
+                <TableCell>{session.title}</TableCell>
+
+                {!isCompact && (
+                  <>
+                    <TableCell>{session.date}</TableCell>
+                    <TableCell>{session.isActive ? "Active" : "Inactive"}</TableCell>
+                  </>
+                )}
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
       </Box>
+
+     
+      {!isCompact && (
+        <Box sx={{ display: "flex", justifyContent: "center", p: 3 }}>
+          <Pagination count={totalPages} page={page} onChange={(_, value) => setPage(value)} color="primary" />
+        </Box>
+      )}
 
       <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
         <DialogTitle>Add Chat Session</DialogTitle>
         <DialogContent>
-          <TextField autoFocus fullWidth margin="dense" label="Session Title" value={newTitle} onChange={(e) => setNewTitle(e.target.value)} />
+          <TextField
+            autoFocus
+            fullWidth
+            margin="dense"
+            label="Session Title"
+            value={newTitle}
+            onChange={(e) => setNewTitle(e.target.value)}
+          />
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setOpenDialog(false)}>Cancel</Button>
