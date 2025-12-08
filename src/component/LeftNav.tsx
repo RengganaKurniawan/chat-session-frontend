@@ -195,7 +195,12 @@ function LeftNav() {
                                         mr: open ? 1.5 : 0,
                                     }}
                                     // HANDLE TOKEN
-                                    onClick={() => navigate("/login")}
+                                    
+                                    onClick={() => {
+                                        localStorage.removeItem("user");
+                                        navigate("/login")
+                                    }}
+                                    
                                 >
                                     <LogoutIcon />
                                 </IconButton>
