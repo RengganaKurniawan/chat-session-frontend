@@ -71,7 +71,7 @@ const SignInCard: React.FC = () => {
           name: userData.name,
         };
         localStorage.setItem("user", JSON.stringify(data));
-        navigate("/dashboard");
+        navigate("/");
       } else {
         alert("Wrong email or password.");
       }
@@ -81,7 +81,7 @@ const SignInCard: React.FC = () => {
     useEffect(() => {
       const user = localStorage.getItem("user");
       if (user) {
-        navigate("/dashboard");
+        navigate("/");
       }
     }, [navigate]);
 
