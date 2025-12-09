@@ -79,14 +79,15 @@ function ChatMessage({
                     py: 0.5,
                     maxWidth: "70%",
                     minWidth: "150px",
-                    bgcolor: isOwn ? "#DCF8C6" : "#ffffff",
+                    bgcolor: isOwn ? "primary.main" : "white",
+                    color: isOwn ? "white" : "neutral.800",
                     borderRadius: 2,
                     "& img": { maxWidth: "100%" },
                     position: 'relative',
                 }}
             >
                 <Box sx={{ position: 'absolute', top: 0, right: 0 }}>
-                    <IconButton size="small" onClick={handleMenuClick}>
+                    <IconButton size="small" onClick={handleMenuClick} sx={{ color: isOwn ? 'white' : 'neutral.500' }}>
                         <MoreVertIcon sx={{ fontSize: 16 }} />
                     </IconButton>
                     <Menu
@@ -94,17 +95,17 @@ function ChatMessage({
                         open={open}
                         onClose={handleMenuClose}
                     >
-                        <MenuItem onClick={handleCopy}>
+                        <MenuItem onClick={handleCopy} sx={{ color: 'neutral.800' }}>
                             <ContentCopyIcon sx={{ fontSize: 16, mr: 1 }} />
                             Copy
                         </MenuItem>
                         {!isOwn && (
                             [
-                                <MenuItem key="like" onClick={() => handleReaction('up')} sx={{ color: reaction === 'up' ? theme.palette.primary.main : 'inherit' }}>
+                                <MenuItem key="like" onClick={() => handleReaction('up')} sx={{ color: reaction === 'up' ? 'primary.main' : 'neutral.800' }}>
                                     <ThumbUpAltOutlinedIcon sx={{ fontSize: 16, mr: 1 }} />
                                     Like
                                 </MenuItem>,
-                                <MenuItem key="dislike" onClick={() => handleReaction('down')} sx={{ color: reaction === 'down' ? theme.palette.primary.main : 'inherit' }}>
+                                <MenuItem key="dislike" onClick={() => handleReaction('down')} sx={{ color: reaction === 'down' ? 'primary.main' : 'neutral.800' }}>
                                     <ThumbDownAltOutlinedIcon sx={{ fontSize: 16, mr: 1 }} />
                                     Dislike
                                 </MenuItem>
@@ -118,7 +119,7 @@ function ChatMessage({
                     sx={{
                         display: "block",
                         textAlign: "left",
-                        color: "text.secondary",
+                        color: isOwn ? "white" : "neutral.500",
                         fontWeight: 600,
                         mb: 0.2,
                     }}
@@ -130,7 +131,7 @@ function ChatMessage({
                 <Box
                     sx={{
                         "& p": { margin: 0 },
-                        color: "text.primary",
+                        color: isOwn ? "white" : "neutral.800",
                         fontSize: "0.875rem",
                         lineHeight: 1.2,
                         pr: '24px',
@@ -149,7 +150,7 @@ function ChatMessage({
                                     target="_blank" 
                                     rel="noopener noreferrer" 
                                     underline="hover"
-                                    color="primary"
+                                    color={isOwn ? "white" : "primary"}
                                 >
                                     {children}
                                 </Link>
@@ -173,7 +174,7 @@ function ChatMessage({
                         display: "block",
                         textAlign: "right",
                         mt: 0.2,
-                        color: "text.disabled",
+                        color: isOwn ? "white" : "neutral.500",
                         fontSize: "0.7rem",
                     }}
                     >
@@ -194,7 +195,7 @@ function ChatMessage({
                         {reaction === 'up' ? (
                             <ThumbUpAltIcon sx={{ fontSize: 12, color: 'primary.main' }} />
                         ) : (
-                            <ThumbDownAltOutlinedIcon sx={{ fontSize: 12, color: 'error.main' }} />
+                            <ThumbDownAltOutlinedIcon sx={{ fontSize: 12, color: '#F59E0B' }} />
                         )}
                     </Box>
                 )}

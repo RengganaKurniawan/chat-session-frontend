@@ -92,17 +92,17 @@ const AvailableActions: React.FC<AvailableActionsProps> = ({ onClose, onSelectAc
   const borderClass = fileName
     ? "border-green-500"
     : isDragActive
-    ? "border-blue-400"
-    : "border-gray-200";
+    ? "border-primary"
+    : "border-neutral-300";
 
   const bgClass = isDragActive ? "bg-blue-50" : "bg-white";
 
 
   return (
-    <div className="absolute bottom-20 left-12 mb-2 w-full max-w-md bg-white rounded-lg shadow-lg p-4 border border-gray-200">
+    <div className="absolute bottom-20 left-12 mb-2 w-full max-w-md bg-white rounded-lg shadow-lg p-4 border border-neutral-300">
       <div className="flex justify-between items-center mb-4">
-        <h3 className="text-lg font-semibold">Available Actions</h3>
-        <button onClick={onClose} className="text-gray-500 hover:text-gray-700">
+        <h3 className="text-lg font-semibold text-neutral-800">Available Actions</h3>
+        <button onClick={onClose} className="text-neutral-500 hover:text-neutral-800">
           <span className="sr-only">Close</span>
           <CloseIcon />
         </button>
@@ -123,7 +123,7 @@ const AvailableActions: React.FC<AvailableActionsProps> = ({ onClose, onSelectAc
             <div className="flex flex-col items-center gap-2">
               <div
                 className={`w-16 h-16 rounded-full flex items-center justify-center ${
-                  fileName ? "border-green-500" : "border-dashed border-gray-300"
+                  fileName ? "border-green-500" : "border-dashed border-neutral-300"
                 }`}
                 style={{
                   borderWidth: 2,
@@ -137,7 +137,7 @@ const AvailableActions: React.FC<AvailableActionsProps> = ({ onClose, onSelectAc
                       fontSize: isDragActive ? 40 : 32,
                       transform: isDragActive ? "translateY(-2px) scale(1.06)" : "none",
                       transition: "transform 180ms ease, font-size 180ms ease, color 150ms ease",
-                      color: isDragActive ? "rgb(37,99,235)" : "rgb(17,24,39)",
+                      color: isDragActive ? "#3B82F6" : "#1F2937",
                       pointerEvents: "none",
                     }}
                   />
@@ -153,15 +153,15 @@ const AvailableActions: React.FC<AvailableActionsProps> = ({ onClose, onSelectAc
               </div>
 
               <div className="text-center">
-                <p className="text-base font-medium text-gray-800">Drag and drop your file</p>
-                <p className="text-xs text-gray-500 mt-1">
+                <p className="text-base font-medium text-neutral-800">Drag and drop your file</p>
+                <p className="text-xs text-neutral-500 mt-1">
                   or{" "}
                   <button
                     onClick={(e) => {
                       e.stopPropagation();
                       onBrowseClick();
                     }}
-                    className="underline"
+                    className="underline text-primary"
                   >
                     click to browse
                   </button>{" "}
@@ -180,7 +180,7 @@ const AvailableActions: React.FC<AvailableActionsProps> = ({ onClose, onSelectAc
           </div>
         
         <p
-            className={`text-xs text-gray-500 mt-3 ${fileName ? "" : "invisible"}`}
+            className={`text-xs text-neutral-500 mt-3 ${fileName ? "" : "invisible"}`}
             aria-hidden={!fileName}
         >
             Selected file: <span className="font-medium">{fileName ?? "placeholder"}</span>
@@ -190,7 +190,7 @@ const AvailableActions: React.FC<AvailableActionsProps> = ({ onClose, onSelectAc
           {actions.map((action) => (
             <li
               key={action}
-              className="p-2 hover:bg-gray-100 rounded-md cursor-pointer"
+              className="p-2 hover:bg-neutral-100 rounded-md cursor-pointer"
               onClick={() => onSelectAction(action)}
             >
               {action}

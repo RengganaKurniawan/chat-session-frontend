@@ -29,14 +29,14 @@ const DefaultSortIcon = () => (
   <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
     <path
       d="M7 4v12l-4-4m4 4 4-4"
-      stroke="black"
+      stroke="currentColor"
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
     />
     <path
       d="M17 20V8l4 4m-4-4-4 4"
-      stroke="black"
+      stroke="currentColor"
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -153,15 +153,15 @@ function SessionsList({ onSessionSelect, isCompact, selectedSession, currentUser
   const totalPages = Math.ceil(filteredSessions.length / rowsPerPage);
 
   return (
-    <Box sx={{ minHeight: "100vh", bgcolor: "white", p: 4, flexGrow: 1 }}>
-      <Box sx={{ p: isCompact ? 1.5 : 3, display: "flex", justifyContent: "space-between", alignItems: "center", borderBottom: "1px solid white" }}>
-        <Typography variant={isCompact ? "subtitle1" : "h6"} fontWeight={600}>Chat Sessions</Typography>
+    <Box sx={{ minHeight: "100vh", bgcolor: "neutral.100", p: 4, flexGrow: 1 }}>
+      <Box sx={{ p: isCompact ? 1.5 : 3, display: "flex", justifyContent: "space-between", alignItems: "center", borderBottom: "1px solid", borderColor: 'neutral.300' }}>
+        <Typography variant={isCompact ? "subtitle1" : "h6"} fontWeight={600} color="neutral.800">Chat Sessions</Typography>
         <IconButton 
           size={isCompact ? "small" : "medium"}
-          sx={{ border: isCompact ? "1.5px solid #000" : "2px solid #000" }} 
+          sx={{ border: isCompact ? "1.5px solid" : "2px solid", color: 'primary.main' }} 
           onClick={() => setOpenDialog(true)}
         >
-          <AddIcon sx={{ color: "#000", fontSize: isCompact ? "18px" : "24px" }} />
+          <AddIcon sx={{ fontSize: isCompact ? "18px" : "24px" }} />
         </IconButton>
       </Box>
 
@@ -170,6 +170,7 @@ function SessionsList({ onSessionSelect, isCompact, selectedSession, currentUser
         sx={{
           p: isCompact ? 1 : 2,
           borderBottom: "1px solid",
+          borderColor: 'neutral.300',
           display: "flex",
           gap: isCompact ? 1 : 2,
           alignItems: "center",
@@ -186,8 +187,10 @@ function SessionsList({ onSessionSelect, isCompact, selectedSession, currentUser
             display: "flex",
             alignItems: "center",
             gap: 1,
-            border: "1px solid white",
+            border: "1px solid",
+            borderColor: 'neutral.300',
             bgcolor: "white",
+            color: 'neutral.800',
             boxShadow: "0 1px 3px rgba(0,0,0,0.12)"
           }}
         >
@@ -207,7 +210,9 @@ function SessionsList({ onSessionSelect, isCompact, selectedSession, currentUser
             flexGrow: isCompact ? 1 : 0,
             "& .MuiOutlinedInput-root": { 
               borderRadius: "40px",
-              fontSize: isCompact ? "0.875rem" : "1rem"
+              fontSize: isCompact ? "0.875rem" : "1rem",
+              borderColor: 'neutral.300',
+              bgcolor: 'white',
             },
             "& .MuiInputBase-input": {
               padding: isCompact ? "6px 14px" : "8.5px 14px"
@@ -232,7 +237,7 @@ function SessionsList({ onSessionSelect, isCompact, selectedSession, currentUser
               value={searchDateQuery}
               onChange={(e) => setSearchDateQuery(e.target.value)}
               size="small"
-              sx={{ minWidth: "200px", "& .MuiOutlinedInput-root": { borderRadius: "40px" } }}
+              sx={{ minWidth: "200px", "& .MuiOutlinedInput-root": { borderRadius: "40px", bgcolor: 'white', } }}
               InputProps={{
                 endAdornment: searchDateQuery && (
                   <InputAdornment position="end">
@@ -250,7 +255,7 @@ function SessionsList({ onSessionSelect, isCompact, selectedSession, currentUser
               value={searchStatusQuery}
               onChange={(e) => setSearchStatusQuery(e.target.value)}
               size="small"
-              sx={{ minWidth: "200px", "& .MuiOutlinedInput-root": { borderRadius: "40px" } }}
+              sx={{ minWidth: "200px", "& .MuiOutlinedInput-root": { borderRadius: "40px", bgcolor: 'white', } }}
               InputProps={{
                 endAdornment: searchStatusQuery && (
                   <InputAdornment position="end">
@@ -282,13 +287,13 @@ function SessionsList({ onSessionSelect, isCompact, selectedSession, currentUser
             <TableRow>
               <TableCell>
                 <Box
-                  sx={{ display: "flex", alignItems: "center", gap: 1, cursor: "pointer" }}
+                  sx={{ display: "flex", alignItems: "center", gap: 1, cursor: "pointer", color: 'neutral.800' }}
                   onClick={() => handleSort("title")}
                 >
                   <Typography fontWeight={600}>Title</Typography>
                   {sortColumn !== "title" && <DefaultSortIcon />}
-                  {sortColumn === "title" && sortOrder === "asc" && <ArrowUpwardIcon fontSize="small" />}
-                  {sortColumn === "title" && sortOrder === "desc" && <ArrowDownwardIcon fontSize="small" />}
+                  {sortColumn === "title" && sortOrder === "asc" && <ArrowUpwardIcon fontSize="small" sx={{ color: 'neutral.500' }} />}
+                  {sortColumn === "title" && sortOrder === "desc" && <ArrowDownwardIcon fontSize="small" sx={{ color: 'neutral.500' }} />}
                 </Box>
               </TableCell>
 
@@ -296,25 +301,25 @@ function SessionsList({ onSessionSelect, isCompact, selectedSession, currentUser
                 <>
                   <TableCell>
                     <Box
-                      sx={{ display: "flex", alignItems: "center", gap: 1, cursor: "pointer" }}
+                      sx={{ display: "flex", alignItems: "center", gap: 1, cursor: "pointer", color: 'neutral.800' }}
                       onClick={() => handleSort("date")}
                     >
                       <Typography fontWeight={600}>Date</Typography>
                       {sortColumn !== "date" && <DefaultSortIcon />}
-                      {sortColumn === "date" && sortOrder === "asc" && <ArrowUpwardIcon fontSize="small" />}
-                      {sortColumn === "date" && sortOrder === "desc" && <ArrowDownwardIcon fontSize="small" />}
+                      {sortColumn === "date" && sortOrder === "asc" && <ArrowUpwardIcon fontSize="small" sx={{ color: 'neutral.500' }} />}
+                      {sortColumn === "date" && sortOrder === "desc" && <ArrowDownwardIcon fontSize="small" sx={{ color: 'neutral.500' }} />}
                     </Box>
                   </TableCell>
 
                   <TableCell>
                     <Box
-                      sx={{ display: "flex", alignItems: "center", gap: 1, cursor: "pointer" }}
+                      sx={{ display: "flex", alignItems: "center", gap: 1, cursor: "pointer", color: 'neutral.800' }}
                       onClick={() => handleSort("status")}
                     >
                       <Typography fontWeight={600}>Status</Typography>
                       {sortColumn !== "status" && <DefaultSortIcon />}
-                      {sortColumn === "status" && sortOrder === "asc" && <ArrowUpwardIcon fontSize="small" />}
-                      {sortColumn === "status" && sortOrder === "desc" && <ArrowDownwardIcon fontSize="small" />}
+                      {sortColumn === "status" && sortOrder === "asc" && <ArrowUpwardIcon fontSize="small" sx={{ color: 'neutral.500' }} />}
+                      {sortColumn === "status" && sortOrder === "desc" && <ArrowDownwardIcon fontSize="small" sx={{ color: 'neutral.500' }} />}
                     </Box>
                   </TableCell>
                 </>
@@ -329,7 +334,15 @@ function SessionsList({ onSessionSelect, isCompact, selectedSession, currentUser
                 hover
                 onClick={() => onSessionSelect(session)}
                 selected={selectedSession?.id === session.id}
-                sx={{ cursor: "pointer" }}
+                sx={{ 
+                  cursor: "pointer",
+                  '&.Mui-selected': {
+                    backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                    '&:hover': {
+                      backgroundColor: 'rgba(59, 130, 246, 0.2)',
+                    }
+                  }
+                }}
               >
                 <TableCell>{session.title}</TableCell>
 
@@ -365,8 +378,8 @@ function SessionsList({ onSessionSelect, isCompact, selectedSession, currentUser
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setOpenDialog(false)}>Cancel</Button>
-          <Button variant="contained" onClick={handleAddSession}>Add</Button>
+          <Button onClick={() => setOpenDialog(false)} color="primary">Cancel</Button>
+          <Button variant="contained" onClick={handleAddSession} color="primary">Add</Button>
         </DialogActions>
       </Dialog>
     </Box>

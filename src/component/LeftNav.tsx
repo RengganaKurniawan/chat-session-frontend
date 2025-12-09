@@ -87,7 +87,7 @@ function LeftNav() {
                 display: 'flex',
                 flexDirection: 'column',
                 height: '100vh',
-                bgcolor: 'grey',
+                bgcolor: '#1F2937',
             }}>
                 {/* top */}
                 <List sx={{ pt: 1 }}>
@@ -104,6 +104,7 @@ function LeftNav() {
                                     minWidth: 0,
                                     mr: open ? 3 : 'auto',
                                     justifyContent: 'center',
+                                    color: 'white',
                                 }}
                             >
                                 <MenuIcon />
@@ -113,7 +114,7 @@ function LeftNav() {
                                     <Typography
                                         variant="h6"
                                         noWrap
-                                        sx={{ fontWeight: '600' }}
+                                        sx={{ fontWeight: '600', color: 'white' }}
                                     >
                                         Chat App
                                     </Typography>
@@ -131,7 +132,11 @@ function LeftNav() {
                             <ListItemButton
                                 sx={{
                                     justifyContent: open ? 'initial' : 'center',
-                                    px: 2.25, 
+                                    px: 2.25,
+                                    bgcolor: item.isActive ? 'rgba(59, 130, 246, 0.2)' : 'transparent',
+                                    '&:hover': {
+                                        bgcolor: item.isActive ? 'rgba(59, 130, 246, 0.3)' : 'rgba(255, 255, 255, 0.1)',
+                                    },
                                 }}
                                 onClick={() => {
                                     if(item.isActive)
@@ -143,11 +148,12 @@ function LeftNav() {
                                         minWidth: 0,
                                         mr: open ? 3 : 'auto',
                                         justifyContent: 'center',
+                                        color: item.isActive ? '#3B82F6' : 'white',
                                     }}
                                 >
                                     {item.icon}
                                 </ListItemIcon>
-                                <ListItemText primary={item.text} sx={{ opacity: open ? 1 : 0, transition: 'opacity 0.2s' }} />
+                                <ListItemText primary={item.text} sx={{ opacity: open ? 1 : 0, transition: 'opacity 0.2s', color: item.isActive ? '#3B82F6' : 'white' }} />
                             </ListItemButton>
                         </ListItem>
                     ))}
@@ -163,6 +169,9 @@ function LeftNav() {
                                 sx={{
                                     justifyContent: open ? 'initial' : 'center',
                                     px: 2.25,
+                                    '&:hover': {
+                                        bgcolor: 'rgba(255, 255, 255, 0.1)',
+                                    },
                                 }}
                             >
                                 <ListItemIcon
@@ -170,11 +179,12 @@ function LeftNav() {
                                         minWidth: 0,
                                         mr: open ? 3 : 'auto',
                                         justifyContent: 'center',
+                                        color: 'white',
                                     }}
                                 >
                                     {item.icon}
                                 </ListItemIcon>
-                                <ListItemText primary={item.text} sx={{ opacity: open ? 1 : 0, transition: 'opacity 0.2s' }} />
+                                <ListItemText primary={item.text} sx={{ opacity: open ? 1 : 0, transition: 'opacity 0.2s', color: 'white' }} />
                             </ListItemButton>
                         </ListItem>
                     ))}
@@ -193,6 +203,10 @@ function LeftNav() {
                                         opacity: open ? 1 : 0,
                                         transition: 'opacity 0.2s',
                                         mr: open ? 1.5 : 0,
+                                        color: 'white',
+                                        '&:hover': {
+                                            bgcolor: 'rgba(255, 255, 255, 0.1)',
+                                        },
                                     }}
                                     // HANDLE TOKEN
                                     
@@ -212,6 +226,9 @@ function LeftNav() {
                                 minHeight: 48,
                                 justifyContent: open ? 'initial' : 'center',
                                 px: 2.25,
+                                '&:hover': {
+                                    bgcolor: 'rgba(255, 255, 255, 0.1)',
+                                },
                             }}
                         >
                             <ListItemIcon
@@ -219,6 +236,7 @@ function LeftNav() {
                                     minWidth: 0,
                                     mr: open ? 3 : 'auto',
                                     justifyContent: 'center',
+                                    color: 'white',
                                 }}
                             >
                                 <PersonIcon />
@@ -228,6 +246,7 @@ function LeftNav() {
                                 sx={{
                                     opacity: open ? 1 : 0,
                                     transition: 'opacity 0.2s',
+                                    color: 'white',
                                 }}
                             />
                         </ListItemButton>

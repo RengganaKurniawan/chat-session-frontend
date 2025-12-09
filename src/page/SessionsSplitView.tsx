@@ -34,7 +34,7 @@ const SessionsSplitView = () => {
         component="main"
         sx={{
           flexGrow: 1,
-          bgcolor: 'background.default',
+          bgcolor: 'neutral.100',
           display: 'flex',
           height: '100vh',
           overflow: 'hidden'
@@ -44,7 +44,8 @@ const SessionsSplitView = () => {
           flex: isCompact ? '0 0 400px' : '1',
           transition: 'flex 0.3s ease-in-out',
           overflow: 'hidden',
-          borderRight: isCompact ? '1px solid #e0e0e0' : "none"
+          borderRight: isCompact ? '1px solid' : "none",
+          borderColor: isCompact ? 'neutral.300' : 'transparent',
         }}>
           <SessionsList
             currentUserId={LOGGED_IN_USER_ID}

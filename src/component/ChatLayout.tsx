@@ -98,13 +98,14 @@ function ChatLayout({ sessionId, onClose }: ChatLayoutProps) {
                     display: "flex",
                     justifyContent: "space-between",
                     alignItems: "center",
+                    bgcolor: 'white',
                 }}
             >
-                <Typography variant="h6" fontWeight="bold">
+                <Typography variant="h6" fontWeight="bold" color="neutral.800">
                     {currentSessionName || "New Chat"}
                 </Typography>
 
-                <IconButton onClick={onClose}>
+                <IconButton onClick={onClose} sx={{ color: 'neutral.500' }}>
                     <CloseIcon />
                 </IconButton>
             </Paper>
@@ -116,6 +117,7 @@ function ChatLayout({ sessionId, onClose }: ChatLayoutProps) {
                 p={2}
                 display="flex"
                 flexDirection="column"
+                bgcolor="neutral.100"
             >
                 {messages.map((msg) => (
                     <ChatMessage 
@@ -132,8 +134,8 @@ function ChatLayout({ sessionId, onClose }: ChatLayoutProps) {
 
                 {isAiTyping && (
                    <Box sx={{ width: '100%', mb: 2 }}>
-                       <Typography variant="caption" color="text.secondary">AI is thinking...</Typography>
-                       <LinearProgress sx={{ maxWidth: "200px", mt: 1 }} />
+                       <Typography variant="caption" color="neutral.500">AI is thinking...</Typography>
+                       <LinearProgress color="primary" sx={{ maxWidth: "200px", mt: 1 }} />
                    </Box>
                 )}
                 
@@ -147,6 +149,7 @@ function ChatLayout({ sessionId, onClose }: ChatLayoutProps) {
                     p: 1.5,
                     position: "sticky",
                     bottom: 0,
+                    bgcolor: 'white',
                 }}
             >
                 {showActions && (
@@ -168,20 +171,20 @@ function ChatLayout({ sessionId, onClose }: ChatLayoutProps) {
                             '& .MuiOutlinedInput-root': {
                                 borderRadius: '20px',
                                 '& fieldset': {
-                                    borderColor: '#e0e0e0',
+                                    borderColor: 'neutral.300',
                                 },
                                 '&:hover fieldset': {
-                                    borderColor: '#c0c0c0',
+                                    borderColor: 'neutral.500',
                                 },
                                 '&.Mui-focused fieldset': {
-                                    borderColor: '#a0a0a0',
+                                    borderColor: 'primary.main',
                                 },
                             },
                         }}
                         InputProps={{
                             startAdornment: (
                                 <InputAdornment position="start">
-                                    <IconButton onClick={() => setShowActions(!showActions)}>
+                                    <IconButton onClick={() => setShowActions(!showActions)} sx={{ color: 'neutral.500' }}>
                                         {showActions ? <CloseIcon /> : <AddIcon />}
                                     </IconButton>
                                 </InputAdornment>

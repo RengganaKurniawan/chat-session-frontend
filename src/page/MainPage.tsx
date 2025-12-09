@@ -87,18 +87,18 @@ export default function MainPage() {
   const borderClass = fileName
     ? "border-green-500"
     : isDragActive
-    ? "border-blue-400"
-    : "border-gray-200";
+    ? "border-primary"
+    : "border-neutral-300";
 
   const bgClass = isDragActive ? "bg-blue-50" : "bg-white";
 
   return (
     <div className="flex min-h-screen"> {/* Use flex for layout */}
       <LeftNav /> {/* Render LeftNav */}
-      <div className="flex-grow flex items-center justify-center bg-white"> {/* Main content area */}
+      <div className="flex-grow flex items-center justify-center bg-neutral-100"> {/* Main content area */}
         <div className="w-full max-w-md text-center px-6 py-12">
-          <h2 className="text-2xl font-semibold text-gray-900 mb-2">New Chat Session</h2>
-          <p className="text-sm text-gray-500 mb-8">Upload a document to start</p>
+          <h2 className="text-2xl font-semibold text-neutral-800 mb-2">New Chat Session</h2>
+          <p className="text-sm text-neutral-500 mb-8">Upload a document to start</p>
 
           <div
             role="button"
@@ -115,7 +115,7 @@ export default function MainPage() {
             <div className="flex flex-col items-center gap-4">
               <div
                 className={`w-24 h-24 rounded-full flex items-center justify-center ${
-                  fileName ? "border-green-500" : "border-dashed border-gray-300"
+                  fileName ? "border-green-500" : "border-dashed border-neutral-300"
                 }`}
                 style={{
                   borderWidth: 2,
@@ -129,7 +129,7 @@ export default function MainPage() {
                       fontSize: isDragActive ? 56 : 48,
                       transform: isDragActive ? "translateY(-4px) scale(1.06)" : "none",
                       transition: "transform 180ms ease, font-size 180ms ease, color 150ms ease",
-                      color: isDragActive ? "rgb(37,99,235)" : "rgb(17,24,39)",
+                      color: isDragActive ? "#3B82F6" : "#1F2937",
                       pointerEvents: "none",
                     }}
                   />
@@ -145,8 +145,8 @@ export default function MainPage() {
               </div>
 
               <div>
-                <p className="text-lg font-medium text-gray-800">Drag and drop your file</p>
-                <p className="text-sm text-gray-500 mt-2">
+                <p className="text-lg font-medium text-neutral-800">Drag and drop your file</p>
+                <p className="text-sm text-neutral-500 mt-2">
                   or{" "}
                   <button
                     onClick={(e) => {
@@ -185,16 +185,16 @@ export default function MainPage() {
               className="w-full py-3 rounded-full"
               sx={{
                 border: "1px solid",
-                borderColor: "#111827",
+                borderColor: fileName ? "#3B82F6" : "#D1D5DB",
                 borderRadius: "9999px",
                 textTransform: "none",
                 paddingY: "0.75rem",
-                backgroundColor: fileName ? "#ffffff" : "#f3f4f6", 
-                color: fileName ? "inherit" : "rgb(148,163,184)",
-                boxShadow: fileName ? "none" : "none",
+                backgroundColor: fileName ? "#3B82F6" : "#F3F4F6", 
+                color: fileName ? "#FFFFFF" : "#6B7280",
+                boxShadow: "none",
                 "&:hover": {
-                  boxShadow: fileName ? "0 10px 30px rgba(17,24,39,0.08)" : "none",
-                  backgroundColor: fileName ? "#ffffff" : "#f3f4f6",
+                  boxShadow: fileName ? "0 10px 30px rgba(59,130,246,0.2)" : "none",
+                  backgroundColor: fileName ? "#3B82F6" : "#F3F4F6",
                 },
               }}
               disableElevation
@@ -203,7 +203,7 @@ export default function MainPage() {
             </Button>
 
             <p
-              className={`text-xs text-gray-500 mt-3 ${fileName ? "" : "invisible"}`}
+              className={`text-xs text-neutral-500 mt-3 ${fileName ? "" : "invisible"}`}
               aria-hidden={!fileName}
             >
               Selected file: <span className="font-medium">{fileName ?? "placeholder"}</span>

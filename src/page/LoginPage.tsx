@@ -90,7 +90,7 @@ const SignInCard: React.FC = () => {
     <Card 
       elevation={6} 
       sx={{ 
-        bgcolor: '#D9D9D9', 
+        bgcolor: '#F3F4F6', 
         borderRadius: '24px', 
         width: '100%', 
         maxWidth: 400, 
@@ -102,7 +102,7 @@ const SignInCard: React.FC = () => {
           <Stack spacing={2}>
               {/* Email Input */}
               <Box>
-                <Typography variant="body2" sx={{ fontWeight: 'bold', color: 'black', ml: 0.5, mb: 0.5 }}>
+                <Typography variant="body2" sx={{ fontWeight: 'bold', color: '#1F2937', ml: 0.5, mb: 0.5 }}>
                   Email
                 </Typography>
                 <TextField
@@ -119,13 +119,13 @@ const SignInCard: React.FC = () => {
                   '& .MuiOutlinedInput-root': {
                       borderRadius: '12px',
                       backgroundColor: 'white',
-                      '& fieldset': { borderColor: '#9ca3af' },
+                      '& fieldset': { borderColor: '#D1D5DB' },
                       '&:hover fieldset': { borderColor: '#9ca3af' },
                       '&.Mui-focused fieldset': { borderColor: '#3b82f6', borderWidth: '2px' },
                     },
                     '& input': {
                       padding: '12px 16px',
-                      color: '#374151',
+                      color: '#1F2937',
                     },
                   '& .MuiFormHelperText-root': {
                     marginLeft: 0.5,
@@ -137,7 +137,7 @@ const SignInCard: React.FC = () => {
 
               {/* Password Input */}
               <Box>
-                <Typography variant="body2" sx={{ fontWeight: 'bold', color: 'black', ml: 0.5, mb: 0.5 }}>
+                <Typography variant="body2" sx={{ fontWeight: 'bold', color: '#1F2937', ml: 0.5, mb: 0.5 }}>
                   Password
                 </Typography>
                 <TextField
@@ -151,13 +151,13 @@ const SignInCard: React.FC = () => {
                     '& .MuiOutlinedInput-root': {
                       borderRadius: '12px',
                       backgroundColor: 'white',
-                      '& fieldset': { borderColor: '#9ca3af' },
+                      '& fieldset': { borderColor: '#D1D5DB' },
                       '&:hover fieldset': { borderColor: '#9ca3af' },
                       '&.Mui-focused fieldset': { borderColor: '#3b82f6', borderWidth: '2px' },
                     },
                     '& input': {
                       padding: '12px 16px',
-                      color: '#374151',
+                      color: '#1F2937',
                     }
                   }}
                 />
@@ -170,7 +170,7 @@ const SignInCard: React.FC = () => {
                 variant="contained"
                 disabled={!isFormValid}
                 sx={{
-                  bgcolor: '#1E90FF',
+                  bgcolor: '#3B82F6',
                   '&:hover': { bgcolor: '#2563eb' },
                   borderRadius: '50px',
                   py: 1.5,
@@ -184,7 +184,7 @@ const SignInCard: React.FC = () => {
           </Stack>
         </form>
         {/* Divider */}
-        <Divider sx={{ '&::before, &::after': { borderColor: 'black' }, color: 'black' }}>
+        <Divider sx={{ '&::before, &::after': { borderColor: '#D1D5DB' }, color: '#6B7280' }}>
           <Typography variant="body1" sx={{ px: 1, pb: 0.5 }}>or</Typography>
         </Divider>
 
@@ -196,8 +196,8 @@ const SignInCard: React.FC = () => {
               startIcon={<GoogleIcon />}
               sx={{
                 bgcolor: 'white',
-                color: '#4b5563',
-                borderColor: '#9ca3af',
+                color: '#1F2937',
+                borderColor: '#D1D5DB',
                 borderRadius: '50px',
                 textTransform: 'none',
                 py: 1.5,
@@ -205,7 +205,7 @@ const SignInCard: React.FC = () => {
                 boxShadow: 1,
                 '&:hover': {
                   bgcolor: '#f9fafb',
-                  borderColor: '#9ca3af',
+                  borderColor: '#D1D5DB',
                 }
               }}
           >
@@ -217,8 +217,8 @@ const SignInCard: React.FC = () => {
             startIcon={<MicrosoftIcon />}
             sx={{
               bgcolor: 'white',
-              color: '#4b5563',
-              borderColor: '#9ca3af',
+              color: '#1F2937',
+              borderColor: '#D1D5DB',
               borderRadius: '50px',
               textTransform: 'none',
               py: 1.5,
@@ -226,7 +226,7 @@ const SignInCard: React.FC = () => {
               boxShadow: 1,
               '&:hover': {
                 bgcolor: '#f9fafb',
-                borderColor: '#9ca3af',
+                borderColor: '#D1D5DB',
               }
             }}
           >
@@ -235,9 +235,9 @@ const SignInCard: React.FC = () => {
         </Stack>
 
         {/* Footer Link */}
-        <Typography variant="body2" align="center" sx={{ color: 'black', mt: 1 }}>
+        <Typography variant="body2" align="center" sx={{ color: '#1F2937', mt: 1 }}>
           Don't have an account?{' '}
-            <MuiLink href="#" underline="hover" sx={{ color: '#4A90E2', fontWeight: 500 }}>
+            <MuiLink href="#" underline="hover" sx={{ color: '#3B82F6', fontWeight: 500 }}>
               Sign Up
             </MuiLink>
         </Typography>
@@ -250,7 +250,7 @@ function LoginPageMUI() {
   return (
     <Box sx={{minHeight: '100vh', 
         width: '100%',    
-        backgroundColor: 'white',
+        backgroundColor: '#F3F4F6',
         display: 'flex',  
         flexDirection: 'column', 
         alignItems: 'center',
@@ -259,7 +259,7 @@ function LoginPageMUI() {
         fontFamily: 'sans-serif', 
         }}>   
         {/* Page Heading */}
-        <Typography variant="h1" component="h1" align="center" sx={{ fontSize: { xs: '2.25rem', md: '2.5rem' }, fontWeight: 'bold', color: 'black', marginBottom: '2rem', textAlign: 'center', }}>
+        <Typography variant="h1" component="h1" align="center" sx={{ fontSize: { xs: '2.25rem', md: '2.5rem' }, fontWeight: 'bold', color: '#1F2937', marginBottom: '2rem', textAlign: 'center', }}>
           Sign in to Chat App
         </Typography>      
       <SignInCard />   
