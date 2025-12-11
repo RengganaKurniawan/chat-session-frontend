@@ -4,6 +4,7 @@ import MainPage from "./page/MainPage";
 import SessionsSplitView from "./page/SessionsSplitView";
 import ProtectedRoute from "./component/ProtectedRoute";
 import OutOfScopePage from "./component/OutOfScoped";
+import { Navigate } from "react-router-dom";
 
 function App(){
   return (
@@ -62,6 +63,8 @@ function App(){
           </ProtectedRoute>
           } 
       />
+
+      <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   )
 }
