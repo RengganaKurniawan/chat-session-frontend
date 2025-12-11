@@ -3,6 +3,7 @@ import LoginPage from "./page/LoginPage";
 import MainPage from "./page/MainPage";
 import SessionsSplitView from "./page/SessionsSplitView";
 import ProtectedRoute from "./component/ProtectedRoute";
+import OutOfScopePage from "./component/OutOfScoped";
 
 function App(){
   return (
@@ -28,7 +29,39 @@ function App(){
             <SessionsSplitView />
           </ProtectedRoute>
           } 
-        />
+      />
+      <Route 
+        path="/status" 
+        element={
+          <ProtectedRoute>
+            <OutOfScopePage pageName="Status Page"/>
+          </ProtectedRoute>
+          } 
+      />
+      <Route 
+        path="/favorite" 
+        element={
+          <ProtectedRoute>
+            <OutOfScopePage pageName="Favorite Page"/>
+          </ProtectedRoute>
+          } 
+      />
+      <Route 
+        path="/settings" 
+        element={
+          <ProtectedRoute>
+            <OutOfScopePage pageName="Settings Page"/>
+          </ProtectedRoute>
+          } 
+      />
+      <Route 
+        path="/profile" 
+        element={
+          <ProtectedRoute>
+            <OutOfScopePage pageName="Profile Page"/>
+          </ProtectedRoute>
+          } 
+      />
     </Routes>
   )
 }

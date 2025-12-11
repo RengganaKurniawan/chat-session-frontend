@@ -65,12 +65,12 @@ const StyledDrawer = styled(Drawer, { shouldForwardProp: (prop) => prop !== 'ope
 const middleIcon = [
     { text: 'Home', icon: <HomeIcon />, link: "/", isActive: true },
     { text: 'Sessions', icon: <ChatIcon />, link: "/sessions", isActive: true },
-    { text: 'Status', icon: <NotificationsIcon />, link: "/status", isActive: false },
-    { text: 'Favorite', icon: <FavoriteIcon />, link: "/favorite", isActive: false},
+    { text: 'Status', icon: <NotificationsIcon />, link: "/status", isActive: true },
+    { text: 'Favorite', icon: <FavoriteIcon />, link: "/favorite", isActive: true},
 ];
 
 const bottomIcons = [
-    { text: 'Settings', icon: <SettingsIcon /> },
+    { text: 'Settings', icon: <SettingsIcon />, link: "/settings", isActive: true },
 ];
 
 function LeftNav() {
@@ -173,6 +173,10 @@ function LeftNav() {
                                         bgcolor: 'rgba(255, 255, 255, 0.1)',
                                     },
                                 }}
+                                onClick={() => {
+                                    if(item.isActive)
+                                        navigate(item.link)
+                                    }}
                             >
                                 <ListItemIcon
                                     sx={{
@@ -222,6 +226,7 @@ function LeftNav() {
                         }
                     >
                         <ListItemButton
+                            onClick={() => navigate('/profile')}
                             sx={{
                                 minHeight: 48,
                                 justifyContent: open ? 'initial' : 'center',
