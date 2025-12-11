@@ -89,25 +89,33 @@ function SessionsList({ onSessionSelect, isCompact, selectedSession, currentUser
     setSessions(formattedSessions);
   }, [currentUserId]);
 
-  const handleAddSession = () => {
-    if (!newTitle.trim()) return;
+ const handleAddSession = () => {
+  if (!newTitle.trim()) return;
 
-    // Format date as YYYY-MM-DD
-    const today = new Date();
-    const formattedDate = today.toISOString().split('T')[0];
+  // Format date as YYYY-MM-DD
+  const today = new Date();
+  const formattedDate = today.toISOString().split("T")[0];
 
-    const newSession: Session = {
-      id: sessions.length + 1,
-      title: newTitle,
-      date: formattedDate,
-      isActive: true,
-      userId: currentUserId
-    };
+  // Ambil ID terbesar dari semua session di aiChatData
+  const allSessions = aiChatData.sessions;
+  const maxId = allSessions.length > 0
+    ? Math.max(...allSessions.map((s) => s.id))
+    : 0;
 
-    setSessions([...sessions, newSession]);
-    setNewTitle("");
-    setOpenDialog(false);
+  const newSession: Session = {
+    id: maxId + 1, // ID aman, tidak bertabrakan
+    title: newTitle,
+    date: formattedDate,
+    isActive: true,
+    userId: currentUserId
   };
+
+  setSessions((prev) => [...prev, newSession]);
+
+  setNewTitle("");
+  setOpenDialog(false);
+};
+
 
   const handleSort = (column: SortColumn) => {
     if (sortColumn === column) {
