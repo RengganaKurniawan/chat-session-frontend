@@ -1,6 +1,4 @@
-import { Box, Button, Container, Typography } from "@mui/material";
-import BuildCircleOutlinedIcon from "@mui/icons-material/BuildCircleOutlined";
-import { Link } from "react-router-dom";
+import { Box, Container, Typography } from "@mui/material";
 import LeftNav from "./LeftNav";
 
 const OutOfScopePage = ({ pageName = "This page" }) => {

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { 
     Box, 
     Drawer, 
@@ -21,6 +21,7 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import SettingsIcon from '@mui/icons-material/Settings';
 import PersonIcon from '@mui/icons-material/Person';
 import LogoutIcon from '@mui/icons-material/Logout';
+
 
 
 const menuWidthOpen = 240;
@@ -75,6 +76,7 @@ const bottomIcons = [
 
 function LeftNav() {
     const navigate = useNavigate();
+    const location = useLocation();
     const [open, setOpen] = useState(false);
 
     const handleToggleDrawer = () => {
@@ -127,15 +129,21 @@ function LeftNav() {
 
                 {/* middle */}
                 <List sx={{ flexGrow: 1, pt: 0  }}>
-                    {middleIcon.map((item) => (
+                    {middleIcon.map((item) => {
+                    const isSelected = location.pathname === item.link;
+
+                    return(
                         <ListItem key={item.text} disablePadding sx={{ display: 'block' }}>
                             <ListItemButton
+                                selected={true}
                                 sx={{
                                     justifyContent: open ? 'initial' : 'center',
                                     px: 2.25,
-                                    bgcolor: item.isActive ? 'rgba(59, 130, 246, 0.2)' : 'transparent',
                                     '&:hover': {
-                                        bgcolor: item.isActive ? 'rgba(59, 130, 246, 0.3)' : 'rgba(255, 255, 255, 0.1)',
+                                        bgcolor: 'rgba(59, 130, 246, 0.3)',
+                                    },
+                                    '.Mui-selected': {
+                                        bgcolor: 'rgb(255, 0, 0)',
                                     },
                                 }}
                                 onClick={() => {
@@ -148,15 +156,16 @@ function LeftNav() {
                                         minWidth: 0,
                                         mr: open ? 3 : 'auto',
                                         justifyContent: 'center',
-                                        color: item.isActive ? '#3B82F6' : 'white',
+                                        color: 'white',
                                     }}
                                 >
                                     {item.icon}
                                 </ListItemIcon>
-                                <ListItemText primary={item.text} sx={{ opacity: open ? 1 : 0, transition: 'opacity 0.2s', color: item.isActive ? '#3B82F6' : 'white' }} />
+                                <ListItemText primary={item.text} sx={{ opacity: open ? 1 : 0, transition: 'opacity 0.2s', color: 'white' }} />
                             </ListItemButton>
                         </ListItem>
-                    ))}
+                    )    
+                })}
                 </List>
 
                 {/* bottom */}
