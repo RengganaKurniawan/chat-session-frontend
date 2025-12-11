@@ -135,15 +135,15 @@ function LeftNav() {
                     return(
                         <ListItem key={item.text} disablePadding sx={{ display: 'block' }}>
                             <ListItemButton
-                                selected={true}
+                                selected={isSelected}
                                 sx={{
                                     justifyContent: open ? 'initial' : 'center',
                                     px: 2.25,
                                     '&:hover': {
                                         bgcolor: 'rgba(59, 130, 246, 0.3)',
                                     },
-                                    '.Mui-selected': {
-                                        bgcolor: 'rgb(255, 0, 0)',
+                                    '&.Mui-selected': {
+                                        bgcolor: 'rgba(59, 130, 246, 0.3)',
                                     },
                                 }}
                                 onClick={() => {
