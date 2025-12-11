@@ -1,4 +1,4 @@
-import { Box, Paper, Typography, IconButton, Menu, MenuItem, useTheme, Link } from "@mui/material";
+import { Box, Paper, Typography, IconButton, Menu, MenuItem, Link } from "@mui/material";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import remarkMath from "remark-math";
@@ -29,7 +29,6 @@ function ChatMessage({
     likes,
     dislikes,
 }: ChatMessageProps) {
-    const theme = useTheme();
     const [reaction, setReaction] = useState<'up' | 'down' | null>(null);
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);

@@ -24,7 +24,7 @@ const OutOfScopePage = ({ pageName = "This page" }) => {
             gutterBottom
             sx={{ fontWeight: "bold" }}
           >
-            Feature Out of Scoped
+            Feature Out of Scope
           </Typography>
           <Typography
             variant="body1"
