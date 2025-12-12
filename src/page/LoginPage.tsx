@@ -67,7 +67,7 @@ const SignInCard: React.FC = () => {
 
       if (userData) {
         const data = {
-          email: userData.email,
+          id: userData.id,
           name: userData.name,
         };
         localStorage.setItem("user", JSON.stringify(data));
