@@ -4,7 +4,19 @@ import LeftNav from '../component/LeftNav';
 import SessionsList from '../component/SessionsList';
 import ChatLayout from '../component/ChatLayout';
 
-const LOGGED_IN_USER_ID = 1;
+// const LOCAL_STORAGE = localStorage.getItem("users");
+// var LOGGED_IN_USER_ID: number
+// if (LOCAL_STORAGE) {
+//   try {
+//     const usersObject = JSON.parse(LOCAL_STORAGE);  
+//     LOGGED_IN_USER_ID = usersObject.id;
+//   } catch (error) {
+//      console.error("Error parsing JSON from localStorage:", error);
+//   }
+// }
+
+
+
 interface Session {
   id: number;
   title: string;
@@ -13,6 +25,29 @@ interface Session {
 }
 
 const SessionsSplitView = () => {
+  const [LOGGED_IN_USER_ID] = useState<number | null>(() => {
+    
+    try {
+      if (typeof window === 'undefined') {
+        return null;
+      }
+
+      const storedJson = localStorage.getItem("user");
+
+      if (!storedJson) {
+        return null;
+      }
+
+      const parsedData = JSON.parse(storedJson);
+
+      return parsedData.id || null;
+       
+    } catch (error) {
+      console.error("Error parsing user data:", error);
+      return null;
+    }
+  });
+
   const [selectedSession, setSelectedSession] = useState<Session | null>(null);
   const [isCompact, setIsCompact] = useState(false);
 
@@ -48,7 +83,7 @@ const SessionsSplitView = () => {
           borderColor: isCompact ? 'neutral.300' : 'transparent',
         }}>
           <SessionsList
-            currentUserId={LOGGED_IN_USER_ID}
+            currentUserId={LOGGED_IN_USER_ID||0}
             onSessionSelect={handleSessionSelect}
             isCompact={isCompact}
             selectedSession={selectedSession}
