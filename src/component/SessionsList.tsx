@@ -97,13 +97,15 @@ function SessionsList({ onSessionSelect, isCompact, selectedSession, currentUser
   const formattedDate = today.toISOString().split("T")[0];
 
   // Ambil ID terbesar dari semua session di aiChatData
-  const allSessions = aiChatData.sessions;
-  const maxId = allSessions.length > 0
-    ? Math.max(...allSessions.map((s) => s.id))
+  // const allSessions = aiChatData.sessions;
+  const maxIdInState = sessions.length > 0
+    ? Math.max(...sessions.map((s) => s.id))
     : 0;
+  
+  const newId = maxIdInState + 1;
 
   const newSession: Session = {
-    id: maxId + 1, // ID aman, tidak bertabrakan
+    id: newId,
     title: newTitle,
     date: formattedDate,
     isActive: true,
@@ -111,6 +113,7 @@ function SessionsList({ onSessionSelect, isCompact, selectedSession, currentUser
   };
 
   setSessions((prev) => [...prev, newSession]);
+  onSessionSelect(newSession);
 
   setNewTitle("");
   setOpenDialog(false);
@@ -383,6 +386,12 @@ function SessionsList({ onSessionSelect, isCompact, selectedSession, currentUser
             label="Session Title"
             value={newTitle}
             onChange={(e) => setNewTitle(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                e.preventDefault();
+                handleAddSession();
+              }
+            }}
           />
         </DialogContent>
         <DialogActions>

@@ -21,6 +21,7 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import SettingsIcon from '@mui/icons-material/Settings';
 import PersonIcon from '@mui/icons-material/Person';
 import LogoutIcon from '@mui/icons-material/Logout';
+import { secureStorage } from "../utils/secureStorage";
 
 
 
@@ -224,7 +225,7 @@ function LeftNav() {
                                     // HANDLE TOKEN
                                     
                                     onClick={() => {
-                                        localStorage.removeItem("user");
+                                        secureStorage.removeItem("user");
                                         navigate("/login")
                                     }}
                                     

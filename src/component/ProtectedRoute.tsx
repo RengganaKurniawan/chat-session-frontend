@@ -1,9 +1,10 @@
 import { Navigate } from "react-router-dom";
+import { secureStorage } from "../utils/secureStorage";
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
-  const isAuthenticated = localStorage.getItem("user");
+  const user = secureStorage.getItem("user");
 
-  if (!isAuthenticated) {
+  if (!user) {
     return <Navigate to="/login" />;
   }
 

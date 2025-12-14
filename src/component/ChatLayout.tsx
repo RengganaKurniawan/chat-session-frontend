@@ -9,10 +9,11 @@ import AvailableActions from "./AvailableActions";
 import aiData from "../data/aiChatData.json";
 interface ChatLayoutProps {
     sessionId: number;
+    sessionName?: string;
     onClose: () => void;
 }
 
-function ChatLayout({ sessionId, onClose }: ChatLayoutProps) {
+function ChatLayout({ sessionId, sessionName, onClose }: ChatLayoutProps) {
     const [messages, setMessages] = useState<any[]>([]);
     const [input, setInput] = useState("");
     const [isAiTyping, setIsAiTyping] = useState(false);
@@ -69,8 +70,7 @@ function ChatLayout({ sessionId, onClose }: ChatLayoutProps) {
         }, 1500);
     };
 
-    const currentSessionName = aiData.sessions.find(s => s.id === sessionId)?.name;
-    const handleSelectAction = (action: string) => {
+    const currentSessionName = sessionName || aiData.sessions.find(s => s.id === sessionId)?.name;    const handleSelectAction = (action: string) => {
         setInput(action);
         setShowActions(false);
     };

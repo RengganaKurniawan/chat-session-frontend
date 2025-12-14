@@ -14,6 +14,7 @@ import {
   Stack,
   Link as MuiLink
 } from '@mui/material';
+import { secureStorage } from "../utils/secureStorage";
 
 const GoogleIcon = () => (
   <img 
@@ -70,7 +71,7 @@ const SignInCard: React.FC = () => {
           id: userData.id,
           name: userData.name,
         };
-        localStorage.setItem("user", JSON.stringify(data));
+        secureStorage.setItem("user", data);
         navigate("/");
       } else {
         alert("Wrong email or password.");
@@ -79,7 +80,7 @@ const SignInCard: React.FC = () => {
 
     //redirect to dashboard if already logged in
     useEffect(() => {
-      const user = localStorage.getItem("user");
+      const user = secureStorage.getItem("user");
       if (user) {
         navigate("/");
       }

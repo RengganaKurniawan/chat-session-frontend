@@ -3,6 +3,7 @@ import { Box, CssBaseline} from '@mui/material';
 import LeftNav from '../component/LeftNav';
 import SessionsList from '../component/SessionsList';
 import ChatLayout from '../component/ChatLayout';
+import { secureStorage } from '../utils/secureStorage';
 
 // const LOCAL_STORAGE = localStorage.getItem("users");
 // var LOGGED_IN_USER_ID: number
@@ -26,24 +27,11 @@ interface Session {
 
 const SessionsSplitView = () => {
   const [LOGGED_IN_USER_ID] = useState<number | null>(() => {
-    
     try {
-      if (typeof window === 'undefined') {
-        return null;
-      }
-
-      const storedJson = localStorage.getItem("user");
-
-      if (!storedJson) {
-        return null;
-      }
-
-      const parsedData = JSON.parse(storedJson);
-
-      return parsedData.id || null;
-       
+      const user = secureStorage.getItem("user");
+      return user ? user.id : null;
     } catch (error) {
-      console.error("Error parsing user data:", error);
+      console.error("Error retrieving user data:", error);
       return null;
     }
   });
@@ -95,6 +83,7 @@ const SessionsSplitView = () => {
                 <ChatLayout 
                     key={selectedSession.id} 
                     sessionId={selectedSession.id} 
+                    sessionName={selectedSession.title}
                     onClose={handleCloseChat}
                 />
             </Box>
