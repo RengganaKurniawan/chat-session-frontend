@@ -195,6 +195,7 @@ const SignInCard: React.FC = () => {
               fullWidth
               variant="outlined"
               startIcon={<GoogleIcon />}
+              onClick={() => navigate('/auth-google')}
               sx={{
                 bgcolor: 'white',
                 color: '#1F2937',
@@ -216,6 +217,7 @@ const SignInCard: React.FC = () => {
             fullWidth
             variant="outlined"
             startIcon={<MicrosoftIcon />}
+            onClick={() => navigate('/auth-microsoft')}
             sx={{
               bgcolor: 'white',
               color: '#1F2937',
@@ -238,7 +240,11 @@ const SignInCard: React.FC = () => {
         {/* Footer Link */}
         <Typography variant="body2" align="center" sx={{ color: '#1F2937', mt: 1 }}>
           Don't have an account?{' '}
-            <MuiLink href="#" underline="hover" sx={{ color: '#3B82F6', fontWeight: 500 }}>
+            <MuiLink 
+            component="button" 
+            onClick={() => navigate('/signup')}
+            underline="hover" 
+            sx={{ color: '#3B82F6', fontWeight: 500 }}>
               Sign Up
             </MuiLink>
         </Typography>

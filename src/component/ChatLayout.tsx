@@ -5,7 +5,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import AddIcon from "@mui/icons-material/Add";
 import ChatMessage from "./ChatMessage";
 import AvailableActions from "./AvailableActions";
-
+import { secureStorage } from "../utils/secureStorage";
 import aiData from "../data/aiChatData.json";
 interface ChatLayoutProps {
     sessionId: number;
@@ -14,14 +14,27 @@ interface ChatLayoutProps {
     initialMessage?: string;
 }
 
+interface UserData {
+    id: number;
+    name: string;
+}
+
 function ChatLayout({ sessionId, sessionName, onClose, initialMessage }: ChatLayoutProps) {
     const [messages, setMessages] = useState<any[]>([]);
     const [input, setInput] = useState(initialMessage || "");
     const [isAiTyping, setIsAiTyping] = useState(false);
     const [showActions, setShowActions] = useState(false);
+    const [currentUser, setCurrentUser] = useState<UserData | null>(null);
 
     // autoscroll chat baru
     const messagesEndRef = useRef<null | HTMLDivElement>(null);
+
+    useEffect(() => {
+        const user = secureStorage.getItem("user");
+        if (user) {
+            setCurrentUser(user);
+        }
+    }, []);
 
     useEffect(() => {
         const session = aiData.sessions.find(s => s.id === sessionId);
@@ -130,8 +143,8 @@ function ChatLayout({ sessionId, sessionName, onClose, initialMessage }: ChatLay
                     <ChatMessage 
                         key={msg.id} 
                         text={msg.text}
-                        senderId={msg.role === "user" ? 1 : 2} 
-                        senderName={msg.role === "user" ? "You" : "AI Assistant"}
+                        senderId={msg.role === "user" ? (currentUser?.id || 1) : 2}
+                        senderName={msg.role === "user" ? (currentUser?.name || "You") : "AI Assistant"}
                         time={msg.time}
                         isOwn={msg.role === "user"}
                         likes={msg.likes || 0}

@@ -16,6 +16,36 @@ function App(){
         } 
       />
       <Route 
+        path="/signup" 
+        element={
+          <OutOfScopePage 
+            pageName="Sign Up Page" 
+            showNav={false} 
+            backPath="/login" 
+          />
+        } 
+      />
+      <Route 
+        path="/auth-google" 
+        element={
+          <OutOfScopePage 
+            pageName="Google Sign In" 
+            showNav={false} 
+            backPath="/login" 
+          />
+        } 
+      />
+      <Route 
+        path="/auth-microsoft" 
+        element={
+          <OutOfScopePage 
+            pageName="Microsoft Sign In" 
+            showNav={false} 
+            backPath="/login" 
+          />
+        } 
+      />
+      <Route 
         path="/" 
         element={
           <ProtectedRoute>
