@@ -17,6 +17,7 @@ interface Session {
 const SessionsSplitView = () => {
   const location = useLocation();
   const [fileName, setFileName] = useState<string | undefined>(location.state?.fileName);
+  const [initialMessage, setInitialMessage] = useState<string | undefined>();
 
   const [LOGGED_IN_USER_ID] = useState<number | null>(() => {
     try {
@@ -34,7 +35,6 @@ const SessionsSplitView = () => {
   useEffect(() => {
     if (location.state?.fileName) {
       setFileName(location.state.fileName);
-      // Clear the state so it doesn't persist on re-renders
       window.history.replaceState({}, document.title)
     }
   }, [location.state]);
@@ -43,7 +43,7 @@ const SessionsSplitView = () => {
     setSelectedSession(session);
     setIsCompact(true);
     if (session.fileName) {
-      setFileName(session.fileName);
+      setInitialMessage(session.fileName);
     }
   };
 
@@ -51,6 +51,10 @@ const SessionsSplitView = () => {
     setSelectedSession(null);
     setIsCompact(false);
     setFileName(undefined);
+  };
+
+  const clearInitialMessage = () => {
+    setInitialMessage(undefined);
   };
 
   return (
@@ -90,7 +94,8 @@ const SessionsSplitView = () => {
               sessionId={selectedSession.id}
               sessionName={selectedSession.title}
               onClose={handleCloseChat}
-              initialMessage={selectedSession.fileName}
+              initialMessage={initialMessage}
+              onClearInitialMessage={clearInitialMessage}
             />
           </Box>
         )}

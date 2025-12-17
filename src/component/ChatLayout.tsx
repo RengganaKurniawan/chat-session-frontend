@@ -12,6 +12,7 @@ interface ChatLayoutProps {
     sessionName?: string;
     onClose: () => void;
     initialMessage?: string;
+    onClearInitialMessage?: () => void;
 }
 
 interface UserData {
@@ -19,7 +20,7 @@ interface UserData {
     name: string;
 }
 
-function ChatLayout({ sessionId, sessionName, onClose, initialMessage }: ChatLayoutProps) {
+function ChatLayout({ sessionId, sessionName, onClose, initialMessage, onClearInitialMessage }: ChatLayoutProps) {
     const [messages, setMessages] = useState<any[]>([]);
     const [input, setInput] = useState(initialMessage || "");
     const [isAiTyping, setIsAiTyping] = useState(false);
@@ -52,8 +53,11 @@ function ChatLayout({ sessionId, sessionName, onClose, initialMessage }: ChatLay
     useEffect(() => {
         if (initialMessage) {
             setInput(initialMessage);
+            if (onClearInitialMessage) {
+                onClearInitialMessage();
+            }
         }
-    }, [initialMessage]);
+    }, [initialMessage, onClearInitialMessage]);
     
     const handleSend = () => {
         if (!input.trim()) return;
