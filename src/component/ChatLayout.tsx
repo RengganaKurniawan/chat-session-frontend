@@ -11,11 +11,12 @@ interface ChatLayoutProps {
     sessionId: number;
     sessionName?: string;
     onClose: () => void;
+    initialMessage?: string;
 }
 
-function ChatLayout({ sessionId, sessionName, onClose }: ChatLayoutProps) {
+function ChatLayout({ sessionId, sessionName, onClose, initialMessage }: ChatLayoutProps) {
     const [messages, setMessages] = useState<any[]>([]);
-    const [input, setInput] = useState("");
+    const [input, setInput] = useState(initialMessage || "");
     const [isAiTyping, setIsAiTyping] = useState(false);
     const [showActions, setShowActions] = useState(false);
 
@@ -34,6 +35,12 @@ function ChatLayout({ sessionId, sessionName, onClose }: ChatLayoutProps) {
     useEffect(() => {
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
     }, [messages, isAiTyping]);
+
+    useEffect(() => {
+        if (initialMessage) {
+            setInput(initialMessage);
+        }
+    }, [initialMessage]);
     
     const handleSend = () => {
         if (!input.trim()) return;

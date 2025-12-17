@@ -50,6 +50,7 @@ interface Session {
   date: string;
   isActive: boolean;
   userId?: number;
+  fileName?: string;
 }
 
 interface SessionsListProps {
@@ -57,12 +58,13 @@ interface SessionsListProps {
   isCompact: boolean;
   selectedSession: Session | null;
   currentUserId: number;
+  fileName?: string;
 }
 
 type SortColumn = "title" | "date" | "status" | null;
 type SortOrder = "asc" | "desc" | null;
 
-function SessionsList({ onSessionSelect, isCompact, selectedSession, currentUserId }: SessionsListProps) {
+function SessionsList({ onSessionSelect, isCompact, selectedSession, currentUserId, fileName }: SessionsListProps) {
   const [sessions, setSessions] = useState<Session[]>([]);
   const [searchTitleQuery, setSearchTitleQuery] = useState("");
   const [searchDateQuery, setSearchDateQuery] = useState("");
@@ -89,15 +91,18 @@ function SessionsList({ onSessionSelect, isCompact, selectedSession, currentUser
     setSessions(formattedSessions);
   }, [currentUserId]);
 
+  useEffect(() => {
+    if (fileName) {
+      setOpenDialog(true);
+    }
+  }, [fileName]);
+
  const handleAddSession = () => {
   if (!newTitle.trim()) return;
 
-  // Format date as YYYY-MM-DD
   const today = new Date();
   const formattedDate = today.toISOString().split("T")[0];
 
-  // Ambil ID terbesar dari semua session di aiChatData
-  // const allSessions = aiChatData.sessions;
   const maxIdInState = sessions.length > 0
     ? Math.max(...sessions.map((s) => s.id))
     : 0;
@@ -109,7 +114,8 @@ function SessionsList({ onSessionSelect, isCompact, selectedSession, currentUser
     title: newTitle,
     date: formattedDate,
     isActive: true,
-    userId: currentUserId
+    userId: currentUserId,
+    fileName: fileName
   };
 
   setSessions((prev) => [...prev, newSession]);

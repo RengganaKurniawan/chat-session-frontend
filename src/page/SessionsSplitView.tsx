@@ -1,31 +1,23 @@
-import { useState } from 'react';
-import { Box, CssBaseline} from '@mui/material';
+import { useState, useEffect } from 'react';
+import { Box, CssBaseline } from '@mui/material';
 import LeftNav from '../component/LeftNav';
 import SessionsList from '../component/SessionsList';
 import ChatLayout from '../component/ChatLayout';
 import { secureStorage } from '../utils/secureStorage';
-
-// const LOCAL_STORAGE = localStorage.getItem("users");
-// var LOGGED_IN_USER_ID: number
-// if (LOCAL_STORAGE) {
-//   try {
-//     const usersObject = JSON.parse(LOCAL_STORAGE);  
-//     LOGGED_IN_USER_ID = usersObject.id;
-//   } catch (error) {
-//      console.error("Error parsing JSON from localStorage:", error);
-//   }
-// }
-
-
+import { useLocation } from 'react-router-dom';
 
 interface Session {
   id: number;
   title: string;
   date: string;
   isActive: boolean;
+  fileName?: string;
 }
 
 const SessionsSplitView = () => {
+  const location = useLocation();
+  const [fileName, setFileName] = useState<string | undefined>(location.state?.fileName);
+
   const [LOGGED_IN_USER_ID] = useState<number | null>(() => {
     try {
       const user = secureStorage.getItem("user");
@@ -39,14 +31,26 @@ const SessionsSplitView = () => {
   const [selectedSession, setSelectedSession] = useState<Session | null>(null);
   const [isCompact, setIsCompact] = useState(false);
 
+  useEffect(() => {
+    if (location.state?.fileName) {
+      setFileName(location.state.fileName);
+      // Clear the state so it doesn't persist on re-renders
+      window.history.replaceState({}, document.title)
+    }
+  }, [location.state]);
+
   const handleSessionSelect = (session: Session) => {
     setSelectedSession(session);
     setIsCompact(true);
+    if (session.fileName) {
+      setFileName(session.fileName);
+    }
   };
 
   const handleCloseChat = () => {
-    setSelectedSession(null); 
-    setIsCompact(false);      
+    setSelectedSession(null);
+    setIsCompact(false);
+    setFileName(undefined);
   };
 
   return (
@@ -71,22 +75,24 @@ const SessionsSplitView = () => {
           borderColor: isCompact ? 'neutral.300' : 'transparent',
         }}>
           <SessionsList
-            currentUserId={LOGGED_IN_USER_ID||0}
+            currentUserId={LOGGED_IN_USER_ID || 0}
             onSessionSelect={handleSessionSelect}
             isCompact={isCompact}
             selectedSession={selectedSession}
+            fileName={fileName}
           />
         </Box>
 
         {selectedSession && (
-            <Box sx={{ flex: '1', display: 'flex', flexDirection: 'column' }}>
-                <ChatLayout 
-                    key={selectedSession.id} 
-                    sessionId={selectedSession.id} 
-                    sessionName={selectedSession.title}
-                    onClose={handleCloseChat}
-                />
-            </Box>
+          <Box sx={{ flex: '1', display: 'flex', flexDirection: 'column' }}>
+            <ChatLayout
+              key={selectedSession.id}
+              sessionId={selectedSession.id}
+              sessionName={selectedSession.title}
+              onClose={handleCloseChat}
+              initialMessage={selectedSession.fileName}
+            />
+          </Box>
         )}
       </Box>
     </Box>

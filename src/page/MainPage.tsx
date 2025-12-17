@@ -177,7 +177,7 @@ export default function MainPage() {
               disabled={!fileName}
               onClick={() => {
                 if (fileName) {
-                  navigate('/sessions'); 
+                  navigate('/sessions', { state: { fileName } }); 
                 } else {
                   alert("Please upload a file");
                 }
