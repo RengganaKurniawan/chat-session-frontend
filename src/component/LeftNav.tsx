@@ -226,6 +226,7 @@ function LeftNav() {
                                     
                                     onClick={() => {
                                         secureStorage.removeItem("user");
+                                        secureStorage.removeItem("app_all_sessions");
                                         navigate("/login")
                                     }}
                                     

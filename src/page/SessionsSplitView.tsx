@@ -42,14 +42,14 @@ const SessionsSplitView = () => {
   const handleSessionSelect = (session: Session) => {
     setSelectedSession(session);
     setIsCompact(true);
-    if (session.fileName) {
-      setFileName(session.fileName);
-    }
   };
 
   const handleCloseChat = () => {
     setSelectedSession(null);
     setIsCompact(false);
+  };
+
+  const handleClearFileName = () => {
     setFileName(undefined);
   };
 
@@ -80,6 +80,7 @@ const SessionsSplitView = () => {
             isCompact={isCompact}
             selectedSession={selectedSession}
             fileName={fileName}
+            onClearFileName={handleClearFileName}
           />
         </Box>
 

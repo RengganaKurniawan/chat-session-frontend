@@ -24,6 +24,7 @@ import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 
 import aiChatData from "../data/aiChatData.json";
+import { secureStorage } from "../utils/secureStorage";
 
 const DefaultSortIcon = () => (
   <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -51,6 +52,7 @@ interface Session {
   isActive: boolean;
   userId?: number;
   fileName?: string;
+  name?: string;
 }
 
 interface SessionsListProps {
@@ -59,12 +61,15 @@ interface SessionsListProps {
   selectedSession: Session | null;
   currentUserId: number;
   fileName?: string;
+  onClearFileName?: () => void;
 }
 
 type SortColumn = "title" | "date" | "status" | null;
 type SortOrder = "asc" | "desc" | null;
 
-function SessionsList({ onSessionSelect, isCompact, selectedSession, currentUserId, fileName }: SessionsListProps) {
+const STORAGE_KEY_SESSIONS = "app_all_sessions";
+
+function SessionsList({ onSessionSelect, isCompact, selectedSession, currentUserId, fileName, onClearFileName }: SessionsListProps) {
   const [sessions, setSessions] = useState<Session[]>([]);
   const [searchTitleQuery, setSearchTitleQuery] = useState("");
   const [searchDateQuery, setSearchDateQuery] = useState("");
@@ -80,22 +85,35 @@ function SessionsList({ onSessionSelect, isCompact, selectedSession, currentUser
   const [newTitle, setNewTitle] = useState("");
 
   useEffect(() => {
-    const userSpecificData = aiChatData.sessions.filter((s) => s.userId === currentUserId);
-    const formattedSessions = userSpecificData.map((s) => ({
-      id: s.id,
-      title: s.name,
-      date: s.date || new Date().toLocaleDateString(),
-      isActive: s.isActive !== undefined ? s.isActive : true,
-      userId: s.userId
-    }));
-    setSessions(formattedSessions);
+    let allSessions = secureStorage.getItem(STORAGE_KEY_SESSIONS);
+
+    if (!allSessions || !Array.isArray(allSessions) || allSessions.length === 0) {
+       allSessions = aiChatData.sessions.map(s => ({
+         id: s.id,
+         title: s.name,
+         date: s.date || new Date().toLocaleDateString(),
+         isActive: s.isActive !== undefined ? s.isActive : true,
+         userId: s.userId
+       }));
+       secureStorage.setItem(STORAGE_KEY_SESSIONS, allSessions);
+    }
+
+    const userSpecificData = allSessions.filter((s: Session) => s.userId === currentUserId);
+    setSessions(userSpecificData);
   }, [currentUserId]);
 
   useEffect(() => {
     if (fileName) {
+      setNewTitle(`${fileName}`);
       setOpenDialog(true);
     }
   }, [fileName]);
+
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
+    setNewTitle("");
+    if (onClearFileName) onClearFileName();
+  };
 
  const handleAddSession = () => {
   if (!newTitle.trim()) return;
@@ -103,11 +121,12 @@ function SessionsList({ onSessionSelect, isCompact, selectedSession, currentUser
   const today = new Date();
   const formattedDate = today.toISOString().split("T")[0];
 
-  const maxIdInState = sessions.length > 0
-    ? Math.max(...sessions.map((s) => s.id))
-    : 0;
-  
-  const newId = maxIdInState + 1;
+  const allSessions = secureStorage.getItem(STORAGE_KEY_SESSIONS) || [];
+  const maxId = allSessions.length > 0
+      ? Math.max(...allSessions.map((s: any) => s.id))
+      : 0;
+
+  const newId = maxId + 1;
 
   const newSession: Session = {
     id: newId,
@@ -118,11 +137,14 @@ function SessionsList({ onSessionSelect, isCompact, selectedSession, currentUser
     fileName: fileName
   };
 
-  setSessions((prev) => [...prev, newSession]);
-  onSessionSelect(newSession);
+  const updatedAllSessions = [newSession, ...allSessions];
+  secureStorage.setItem(STORAGE_KEY_SESSIONS, updatedAllSessions);
 
-  setNewTitle("");
-  setOpenDialog(false);
+  setSessions((prev) => [newSession, ...prev]);
+
+  onSessionSelect(newSession);
+  
+  handleCloseDialog();
 };
 
 
