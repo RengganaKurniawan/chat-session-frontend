@@ -15,10 +15,12 @@ import {
   Link as MuiLink
 } from '@mui/material';
 import { secureStorage } from "../utils/secureStorage";
+import GoogleLogo from "../assets/Google_logo.png";
+import MicrosoftLogo from "../assets/Microsoft_logo.png";
 
 const GoogleIcon = () => (
   <img 
-    src="src/assets/Google_logo.png" 
+    src={GoogleLogo} 
     alt="Google" 
     style={{ width: 20, height: 20 }} 
   />
@@ -26,7 +28,7 @@ const GoogleIcon = () => (
 
 const MicrosoftIcon = () => (
   <img 
-    src="src/assets/Microsoft_logo.png" 
+    src={MicrosoftLogo}
     alt="Microsoft" 
     style={{ width: 20, height: 20 }} 
   />
